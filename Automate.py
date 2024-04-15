@@ -5,3 +5,6 @@ class Automate:
         self.terminaux = terminaux
         self.transitions = transitions
 
+    def afficherAutomate(self) {
+        
+    }
