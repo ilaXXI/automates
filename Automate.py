@@ -13,7 +13,7 @@ class Automate:
     def est_etat_initial(self, etat):
         return etat in self.initiaux
 
-    def prochain_etat(self, etat, symbole): # Renvoie un tableau avec les destinations possibles deuis un état avec un symbole
+    def prochain_etat(self, etat, symbole): # Renvoie un tableau avec les destinations possibles depuis un état avec un symbole
         destinations = []
         for t in self.transitions:
             if t.etat1 == etat:
@@ -57,25 +57,6 @@ class Automate:
 
         self.afficherTableau(tableau)
 
-    def est_deterministe(self):
-        
-        if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
-            return False
-        
-        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
-        
-        for transition in self.transitions: # On parcourt toutes les transitions
-            
-            etat_depart = transition.etat1
-            symbole = transition.symbole
-
-            if (etat_depart, symbole) in transitions_par_etat: # On vérifie qu'il n'y ait pas une transition avec le même état1 et symbole
-                return False
-            else:
-                transitions_par_etat[(etat_depart, symbole)] = True # Sinon on le rajoute dans le dictionnaire
-
-        return True
-    
     def caracteristiques (self) : 
         est_deterministe = self.est_deterministe()
         #est_complet = self.est_complet()
@@ -90,4 +71,46 @@ class Automate:
         }
 
 
+    def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 2 si l'automate est déterministe
+        
+        if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
+            return 0
+        
+        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
+        
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            etat_depart = transition.etat1
+            symbole = transition.symbole
 
+            if (etat_depart, symbole) in transitions_par_etat: # On vérifie qu'il n'y ait pas une transition avec le même état1 et symbole
+                return 1
+            else:
+                transitions_par_etat[(etat_depart, symbole)] = True # Sinon on le rajoute dans le dictionnaire
+
+        return 2
+
+    def est_complet(self): #return 1 si l'automate est complet, 0 s'il ne l'est pas
+
+        #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellement le même) avec tous les symboles de l'alphabet
+
+        #On vérifie si l'automate est déterministe
+        if self.est_deterministe!=2 :
+            return 0
+
+        #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états*nb_symboles (l'automate est déterministe)
+        if len(self.transitions) != (self.nb_symboles*self.nb_etats) : 
+            return 0
+        
+        return 1
+    
+    def completion(self): 
+
+        #On regarde si l'automate est complet, le cas échéant pas besoin de le compléter
+        if self.est_complet:
+            return
+        
+        #Si l'automate n'est pas déterministe il faut le déterminiser (quand on aura fait la fonction)
+        
+        #On rajoute un autre etat p qui remplace les vides
+        p = self.nb_etats
