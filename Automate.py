@@ -57,10 +57,10 @@ class Automate:
 
         self.afficherTableau(tableau)
 
-    def est_deterministe(self):
+    def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 3 si l'automate est déterministe
         
         if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
-            return False
+            return 0
         
         transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
         
@@ -70,8 +70,8 @@ class Automate:
             symbole = transition.symbole
 
             if (etat_depart, symbole) in transitions_par_etat: # On vérifie qu'il n'y ait pas une transition avec le même état1 et symbole
-                return False
+                return 1
             else:
                 transitions_par_etat[(etat_depart, symbole)] = True # Sinon on le rajoute dans le dictionnaire
 
-        return True
+        return 2
