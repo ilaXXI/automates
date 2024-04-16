@@ -116,9 +116,12 @@ class Automate:
         p = self.nb_etats
 
     def complementarisation(self):
+        #On vérifie que l'automate est déterministe et complet pour pouvoir faire son complémentaire
         if  self.est_deterministe!=2 and not self.est_complet : 
             print("Complémentarisation impossible car l'automate n'est pas déterministe et complet.")
             return 
+        #On définit les états non terminaux en soustrayant les états terminaux du nombre d'états total 
         non_terminaux = set(range(self.nb_etats)) - set(self.terminaux)
+        #On définit les nouveaux états terminaux qui sont les anciens états non terminaux définis précedemment 
         self.terminaux = list(non_terminaux)
     
