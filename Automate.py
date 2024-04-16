@@ -89,3 +89,20 @@ class Automate:
             return 0
         
         return 1
+    
+    def est_standard(self) : #return 1 si l'automate est standardisé, 0 s'il ne l'est pas 
+
+        #un automate est standardisé s'il n'a qu'une seule entrée et si aucune autre transition n'aboutit à cette entrée 
+
+        #on vérifie qu'il n'y a qu'une seule entrée
+        if len(self.initiaux) != 1 :
+            return 0
+
+        unique_entree = self.initiaux[0]
+
+        #on vérifie qu'il n'y a aucune transition aboutissant à cette unique entrée
+        for transition in self.transitions :
+            if transition.etat2 == unique_entree :
+                return 0
+
+        return 1
