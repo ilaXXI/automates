@@ -8,6 +8,7 @@ def choix_automate ():
         automate = lire_fichier(nomFichier)
         automate.afficherAutomate()
         print(automate.caracteristiques())
+        return automate
     else:
         print("Choix invalide. Veuillez choisir un nombre entre 1 et 44.")
 
@@ -33,7 +34,7 @@ def lire_fichier(nomFichier):
     automate = Automate(nb_symboles, nb_etats, initiaux, terminaux, transitions)
     return automate  
 
-"""def choix_action():
+def choix_action(automate):
     choix = int(input("Choisissez une action : \n"
                       "1. Déterminisation de l'automate\n"
                       "2. Standardisation de l'automate\n"
@@ -42,17 +43,17 @@ def lire_fichier(nomFichier):
                       "5. Création du langage complémentaire\n"
                       "Entrez votre choix (1-5) : "))
     if choix == 1:
-        #determinisation_automate()
+        #automate.determinisation()
     elif choix == 2:
-        #standardisation_automate()
+        #automate.standardisation()
     elif choix == 3:
-        #completion_automate()
+        automate.completion()
     elif choix == 4:
-        #minimisation_automate()
+        #automate.minimisation()
     elif choix == 5:
-        #creation_langage_complementaire()
+        automate.complementarisation()
     else:
-        print("Choix invalide. Veuillez entrer un nombre entre 1 et 5.")"""
+        print("Choix invalide. Veuillez entrer un nombre entre 1 et 5.")
 
 
 #Test avec un automate inventé
@@ -73,8 +74,8 @@ auto.afficherAutomate()
 # Début du main
 continuer = True
 while continuer:
-    choix_automate()
-    #choix_action()
+    automate = choix_automate()
+    #choix_action(automate)
     reponse = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
     if reponse.lower() != 'oui':
         continuer = False
