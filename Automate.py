@@ -96,13 +96,13 @@ class Automate:
 
         #On vérifie si l'automate est déterministe
         if self.est_deterministe!=2 :
-            return 0
+            return False
 
         #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états*nb_symboles (l'automate est déterministe)
         if len(self.transitions) != (self.nb_symboles*self.nb_etats) : 
-            return 0
+            return False
         
-        return 1
+        return True
     
     def completion(self): 
 
