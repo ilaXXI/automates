@@ -22,7 +22,7 @@ class Automate:
         return sorted(destinations)
 
 
-    def afficherTableau(self, tab):
+    def afficherTableau(self, tab): # Fonction qui permet d'afficher un tableau de manière jolie et sans décalage
         max_largeurs = [max(len(str(cellule)) for cellule in colonne) for colonne in zip(*tab)]
         for ligne in tab:
             print("|", end="")
@@ -57,3 +57,21 @@ class Automate:
 
         self.afficherTableau(tableau)
 
+    def est_deterministe(self):
+        
+        if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
+            return False
+        
+        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
+        
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            etat_depart = transition.etat1
+            symbole = transition.symbole
+
+            if (etat_depart, symbole) in transitions_par_etat: # On vérifie qu'il n'y ait pas une transition avec le même état1 et symbole
+                return False
+            else:
+                transitions_par_etat[(etat_depart, symbole)] = True # Sinon on le rajoute dans le dictionnaire
+
+        return True
