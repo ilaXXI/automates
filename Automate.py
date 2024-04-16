@@ -57,6 +57,20 @@ class Automate:
 
         self.afficherTableau(tableau)
 
+    def caracteristiques (self) : 
+        est_deterministe = self.est_deterministe()
+        #est_complet = self.est_complet()
+        #est_standard = self.est_standard()
+        #est_minimal = self.est_minimal()
+
+        return {
+        'est_deterministe': est_deterministe
+        #'est_complet': est_complet,
+        #'est_standard': est_standard,
+        #'est_minimal': est_minimal
+        }
+
+
     def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 2 si l'automate est déterministe
         
         if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
@@ -78,10 +92,10 @@ class Automate:
 
     def est_complet(self): #return 1 si l'automate est complet, 0 s'il ne l'est pas
 
-        #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellemnt le même) avec tous les symboles de l'alphabet
+        #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellement le même) avec tous les symboles de l'alphabet
 
         #On vérifie si l'automate est déterministe
-        if est_deterministe(self)!=2 :
+        if self.est_deterministe!=2 :
             return 0
 
         #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états*nb_symboles (l'automate est déterministe)
@@ -90,6 +104,17 @@ class Automate:
         
         return 1
     
+    def completion(self): 
+
+        #On regarde si l'automate est complet, le cas échéant pas besoin de le compléter
+        if self.est_complet:
+            return
+        
+        #Si l'automate n'est pas déterministe il faut le déterminiser (quand on aura fait la fonction)
+        
+        #On rajoute un autre etat p qui remplace les vides
+        p = self.nb_etats
+
     def est_standard(self) : #return 1 si l'automate est standardisé, 0 s'il ne l'est pas 
 
         #un automate est standardisé s'il n'a qu'une seule entrée et si aucune autre transition n'aboutit à cette entrée 
