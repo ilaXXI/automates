@@ -84,7 +84,7 @@ class Automate:
         if est_deterministe(self)!=2 :
             return 0
 
-        #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états_initiaux*nb_symboles (l'automate est déterministe)
+        #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états*nb_symboles (l'automate est déterministe)
         if len(self.transitions) != (self.nb_symboles*self.nb_etats) : 
             return 0
         
