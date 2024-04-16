@@ -78,10 +78,10 @@ class Automate:
 
     def est_complet(self): #return 1 si l'automate est complet, 0 s'il ne l'est pas
 
-        #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellemnt le même) avec tous les symboles de l'alphabet
+        #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellement le même) avec tous les symboles de l'alphabet
 
         #On vérifie si l'automate est déterministe
-        if est_deterministe(self)!=2 :
+        if self.est_deterministe!=2 :
             return 0
 
         #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états*nb_symboles (l'automate est déterministe)
@@ -89,3 +89,14 @@ class Automate:
             return 0
         
         return 1
+    
+    def completion(self): 
+
+        #On regarde si l'automate est complet, le cas échéant pas besoin de le compléter
+        if self.est_complet:
+            return
+        
+        #Si l'automate n'est pas déterministe il faut le déterminiser (quand on aura fait la fonction)
+        
+        #On rajoute un autre etat p qui remplace les vides
+        p = self.nb_etats
