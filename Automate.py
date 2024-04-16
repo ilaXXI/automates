@@ -114,3 +114,11 @@ class Automate:
         
         #On rajoute un autre etat p qui remplace les vides
         p = self.nb_etats
+
+    def complementarisation(self):
+        if  self.est_deterministe!=2 and not self.est_complet : 
+            print("Complémentarisation impossible car l'automate n'est pas déterministe et complet.")
+            return 
+        non_terminaux = set(range(self.nb_etats)) - set(self.terminaux)
+        self.terminaux = list(non_terminaux)
+    

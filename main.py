@@ -67,6 +67,8 @@ auto = Automate(3, 4, init, term, trans_tab)
 
 auto.afficherAutomate()
 print(auto.est_deterministe())
+auto.complementarisation()
+auto.afficherAutomate()
 
 # Début du main
 continuer = True
