@@ -13,7 +13,7 @@ class Automate:
     def est_etat_initial(self, etat):
         return etat in self.initiaux
 
-    def prochain_etat(self, etat, symbole): # Renvoie un tableau avec les destinations possibles deuis un état avec un symbole
+    def prochain_etat(self, etat, symbole): # Renvoie un tableau avec les destinations possibles depuis un état avec un symbole
         destinations = []
         for t in self.transitions:
             if t.etat1 == etat:
@@ -57,7 +57,7 @@ class Automate:
 
         self.afficherTableau(tableau)
 
-    def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 3 si l'automate est déterministe
+    def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 2 si l'automate est déterministe
         
         if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
             return 0
@@ -75,3 +75,17 @@ class Automate:
                 transitions_par_etat[(etat_depart, symbole)] = True # Sinon on le rajoute dans le dictionnaire
 
         return 2
+
+    def est_complet(self): #return 1 si l'automate est complet, 0 s'il ne l'est pas
+
+        #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellemnt le même) avec tous les symboles de l'alphabet
+
+        #On vérifie si l'automate est déterministe
+        if est_deterministe(self)!=2 :
+            return 0
+
+        #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états_initiaux*nb_symboles (l'automate est déterministe)
+        if len(self.transitions) != (self.nb_symboles*self.nb_etats) : 
+            return 0
+        
+        return 1
