@@ -2,7 +2,7 @@ from Transition import *
 from Automate import *
 def choix_automate (): 
     automate = Automate(0, 0, [], [], [])
-    choix = int(input("Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44)"))
+    choix = int(input("Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44) "))
     if choix >= 1 and choix <= 44:
         nomFichier = f"automates_test/A8-{choix}.txt"
         automate = lire_fichier(nomFichier)

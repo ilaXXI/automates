@@ -59,13 +59,13 @@ class Automate:
 
     def caracteristiques (self) : 
         est_deterministe = self.est_deterministe()
-        #est_complet = self.est_complet()
+        est_complet = self.est_complet()
         #est_standard = self.est_standard()
         #est_minimal = self.est_minimal()
 
         return {
-        'est_deterministe': est_deterministe
-        #'est_complet': est_complet,
+        'est_deterministe': est_deterministe,
+        'est_complet': est_complet,
         #'est_standard': est_standard,
         #'est_minimal': est_minimal
         }
