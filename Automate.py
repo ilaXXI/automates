@@ -171,13 +171,43 @@ class Automate:
 
         #on vérifie qu'il n'y a qu'une seule entrée
         if len(self.initiaux) != 1 :
-            return 0
+            return False
 
         unique_entree = self.initiaux[0]
 
         #on vérifie qu'il n'y a aucune transition aboutissant à cette unique entrée
         for transition in self.transitions :
             if transition.etat2 == unique_entree :
-                return 0
+                return False
 
-        return 1
+        return True
+    
+    def standardiser_automate(self) :
+        if self.est_standard() : #On regarde si l'automate est standard, le cas échéant pas besoin de le compléter
+            print("L'automate est déjà standardisé.")
+            return self
+
+        i = self.nb_etats #on crée un nouvel état initial i (en utilisant le nb total d'états dans l'automate)
+        self.nb_etats += 1
+        self.initiaux = [i] #on met à jour la liste des états initiaux 
+
+        term = False
+        for etat_initial in self.initiaux : 
+            if self.est_etat_terminal(etat_initial) : #on vérifie si le nouvel état initial est terminal
+                term = True
+        
+        if term : #si au moins un état initial est terminal Alors le nouvel état est terminal
+            self.terminaux.append(i)
+
+        self.initiaux = [] #on supprime les aciens états initiaux 
+
+        transitions_nouv = [] #on crée une nouvelle liste pour stocker les nouvelle transitions
+        for transition in self.transitions : #si un des états de transition est un état initial qui existe Alors on met à jour les états pour pointer vers le nouvel état initial
+            if transition.etat1 in self.initiaux :  
+                transition.etat2 = i
+            if transition.etat2 in self.initiaux :
+                transition.etat2 = i
+            transitions_nouv.append(transition)
+        self.transitions = transitions_nouv
+
+        return self
