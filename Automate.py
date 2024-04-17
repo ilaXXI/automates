@@ -1,3 +1,5 @@
+from Transition import *
+
 class Automate:
     def __init__(self, nb_symboles, nb_etats, initiaux, terminaux, transitions):
         
@@ -51,7 +53,10 @@ class Automate:
             for symbole in range(self.nb_symboles): # On note les transitions à partir de chaque état pour chaque symbole
                 destinations = self.prochain_etat(etat, symbole)
                 if len(destinations) != 0:
-                    tableau[etat+1][symbole+2] = ','.join(str(x) for x in destinations)
+                    if destinations[0] == self.nb_etats:
+                        tableau[etat+1][symbole+2] = "P" # On écrit P pour l'état poubelle
+                    else:
+                        tableau[etat+1][symbole+2] = ','.join(str(x) for x in destinations)
                 else:
                     tableau[etat+1][symbole+2] = "--"
 
@@ -142,15 +147,11 @@ class Automate:
             
 
     def completion(self): 
-
-        #On regarde si l'automate est complet, le cas échéant pas besoin de le compléter
-        if self.est_complet:
-            return
         
-        #On rajoute un autre etat p qui remplace les vides
-        p = self.nb_etats #le nombre d'état correspond au numéro d'état de p puisque les états sont numérotés à partir de 0
+        # On rajoute un autre etat p qui remplace les vides
+        p = self.nb_etats # Le nombre d'état correspond au numéro d'état de p puisque les états sont numérotés à partir de 0
 
-        #On fait une liste des transitions par état
+        # On fait une liste des transitions par état
         transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
         
         for transition in self.transitions: # On parcourt toutes les transitions
@@ -158,45 +159,13 @@ class Automate:
             etat_depart = transition.etat1
             symbole = transition.symbole
 
-            if (etat_depart, symbole) not in transitions_par_etat: #On vérifie qu'il n'y soit pas déjà
-                transitions_par_etat[(etat_depart, symbole)] = True #On le rajoute dans le dictionnaire
-
-        #On fait une liste des états
-        liste_des_etats = {}
-        
-        #On parcourt la liste des transitions pour compléter la liste
-        
-        #On le fait une première fois avec les états de départ
-        for transition in self.transitions: # On parcourt toutes les transitions
+            if (etat_depart, symbole) not in transitions_par_etat: # On vérifie qu'il n'y soit pas déjà
+                transitions_par_etat[(etat_depart, symbole)] = True # On le rajoute dans le dictionnaire
             
-            etat_depart = transition.etat1
-
-            if (etat_depart) not in liste_des_etats: # On vérifie qu'il n'est pas déjà dans la liste
-                liste_des_etats[(etat_depart)] = True 
-
-        #On le fait une deuxième fois avec les états d'arrivée
-        for transition in self.transitions: # On parcourt toutes les transitions
-            
-            etat_arrivee = transition.etat2
-
-            if (etat_arrivee) not in liste_des_etats: # On vérifie qu'il n'est pas déjà dans la liste
-                liste_des_etats[(etat_arrivee)] = True 
-
-        #On fait une liste des symboles
-        liste_des_symboles ={}
-
-        #On parcourt la liste des transitions pour compléter la liste
-        for transition in self.transitions: # On parcourt toutes les transitions
-            
-            symbole= transition.symbole
-
-            if (symbole) not in liste_des_symboles: # On vérifie qu'il n'est pas déjà dans la liste
-                liste_des_symboles[(symbole)] = True 
-
-
-        #On fait une double boucle pour trouver les transitions manquantes
-        for etat in liste_des_etats:
-            for symbole in liste_des_symboles:
-                #si il manque un symbole pour un état de départ on l'ajoute au tableau de transitions avec comme état d'arrivée p
+                # On fait une double boucle pour trouver les transitions manquantes
+        for etat in range(self.nb_etats):
+            for symbole in range(self.nb_symboles):
+                # S'il manque un symbole pour un état de départ on l'ajoute au tableau de transitions avec comme état d'arrivée p
                 if (etat,symbole) not in transitions_par_etat:
-                    self.transitions[(etat,symbole,p)]=True
+                    newTrans = Transition(etat, symbole, p)
+                    self.transitions.append(newTrans)
