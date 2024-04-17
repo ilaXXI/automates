@@ -199,3 +199,46 @@ class Automate:
         self.transitions = transitions_nouv
 
         return self
+    
+
+    def reconnaissance(self,chaine):
+        
+        #if self.est_deterministe!=2 :
+            #self.determinisation
+
+        if self.est_complet == False :
+            self.completion
+
+        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
+        
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            etat_depart = transition.etat1
+            symbole = transition.symbole
+
+            if (etat_depart, symbole) not in transitions_par_etat: # On vérifie qu'il n'y soit pas déjà
+                transitions_par_etat[(etat_depart, symbole)] = True # On le rajoute dans le dictionnaire
+
+        #On initialise l'état de départ avec l'état initial
+        etat_de_depart = self.initiaux
+
+        #On parcourt la chaine
+        for lettre in chaine :
+            #On convertit en chiffre selon le code ascii
+            chiffre = ord(lettre)-97 
+            #On regarde si ce chiffre (donc la lettre) va quelque part à partir de l'état de départ
+            if (etat_de_depart,chiffre) not in transitions_par_etat :
+                return False
+            #Si cette transition existe bien, on regarde quel est l'état d'arrivée car ça va être notre nouvel état de départ
+            else :
+                for transition in self.transitions :
+                    if transition.etat1 == etat_de_depart and transition.symbole == chiffre :
+                        etat_de_depart = transition.etat2 
+                        break #on a trouvé l'état d'arrivée et c'est notre nouvel état de départ pas besoin de continuer la boucle
+        
+        #On regarde si le dernier état sur lequel on est arrivé est bien un état terminal
+        if etat_de_depart not in self.terminaux : 
+            return False
+        
+        return True 
+                
