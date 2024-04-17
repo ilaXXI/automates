@@ -233,3 +233,15 @@ class Automate:
             return False
 
         return True
+
+    def determinisation(self) :
+        self.terminaux, self.initiaux = self.initiaux, self.terminaux #on permute les états terminaux en états non terminaux et vice versa
+
+        #si l'automate n'est pas deterministe complet alors il faut d'abord le determiniser puis le compléter si besoin
+        if not self.est_deterministe == 2 :
+            self.determinisation()
+        
+        if not self.est_complet() :
+            self.completion()
+
+        
