@@ -72,8 +72,6 @@ while continuer:
     auto = choix_automate()
     auto.afficherAutomate()
     caracteristiques = auto.caracteristiques()
-    auto.standardisation()
-    auto.afficherAutomate()
     #choix_action(auto, caracteristiques)
     reponse = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
     if reponse.lower() != 'oui':
