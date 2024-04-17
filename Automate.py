@@ -110,10 +110,60 @@ class Automate:
         if self.est_complet:
             return
         
-        #Si l'automate n'est pas déterministe il faut le déterminiser (quand on aura fait la fonction)
-        
         #On rajoute un autre etat p qui remplace les vides
-        p = self.nb_etats
+        p = self.nb_etats #le nombre d'état correspond au numéro d'état de p puisque les états sont numérotés à partir de 0
+
+        #On fait une liste des transitions par état
+        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
+        
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            etat_depart = transition.etat1
+            symbole = transition.symbole
+
+            if (etat_depart, symbole) not in transitions_par_etat: #On vérifie qu'il n'y soit pas déjà
+                transitions_par_etat[(etat_depart, symbole)] = True #On le rajoute dans le dictionnaire
+
+        #On fait une liste des états
+        liste_des_etats = {}
+        
+        #On parcourt la liste des transitions pour compléter la liste
+        
+        #On le fait une première fois avec les états de départ
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            etat_depart = transition.etat1
+
+            if (etat_depart) not in liste_des_etats: # On vérifie qu'il n'est pas déjà dans la liste
+                liste_des_etats[(etat_depart)] = True 
+
+        #On le fait une deuxième fois avec les états d'arrivée
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            etat_arrivee = transition.etat2
+
+            if (etat_arrivee) not in liste_des_etats: # On vérifie qu'il n'est pas déjà dans la liste
+                liste_des_etats[(etat_arrivee)] = True 
+
+        #On fait une liste des symboles
+        liste_des_symboles ={}
+
+        #On parcourt la liste des transitions pour compléter la liste
+        for transition in self.transitions: # On parcourt toutes les transitions
+            
+            symbole= transition.symbole
+
+            if (symbole) not in liste_des_symboles: # On vérifie qu'il n'est pas déjà dans la liste
+                liste_des_symboles[(symbole)] = True 
+
+
+        #On fait une double boucle pour trouver les transitions manquantes
+        for etat in liste_des_etats:
+            for symbole in liste_des_symboles:
+                #si il manque un symbole pour un état de départ on l'ajoute au tableau de transitions avec comme état d'arrivée p
+                if (etat,symbole) not in transitions_par_etat:
+                    self.transitions[(etat,symbole,p)]=True
+
 
     def est_standard(self) : #return 1 si l'automate est standardisé, 0 s'il ne l'est pas 
 
