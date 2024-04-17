@@ -190,7 +190,8 @@ class Automate:
             transitions_nouv.append(transition)
         self.transitions = transitions_nouv
 
-        return self
+        self.initiaux = [i] #on met à jour la liste des états initiaux 
+
     
     def reconnaissance(self,chaine) : 
         
