@@ -57,19 +57,6 @@ class Automate:
 
         self.afficherTableau(tableau)
 
-    def caracteristiques (self) : 
-        est_deterministe = self.est_deterministe()
-        #est_complet = self.est_complet()
-        #est_standard = self.est_standard()
-        #est_minimal = self.est_minimal()
-
-        return {
-        'est_deterministe': est_deterministe
-        #'est_complet': est_complet,
-        #'est_standard': est_standard,
-        #'est_minimal': est_minimal
-        }
-
 
     def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 2 si l'automate est déterministe
         
@@ -90,13 +77,9 @@ class Automate:
 
         return 2
 
-    def est_complet(self): #return 1 si l'automate est complet, 0 s'il ne l'est pas
+    def est_complet(self): 
 
         #Un automate est complet s'il est déterministe et si à partir de chaque état on arrive dans un autre état (potentiellement le même) avec tous les symboles de l'alphabet
-
-        #On vérifie si l'automate est déterministe
-        if self.est_deterministe!=2 :
-            return False
 
         #On regarde si le nombre de transitions vérifie l'équation : nb_transitions = nb_états*nb_symboles (l'automate est déterministe)
         if len(self.transitions) != (self.nb_symboles*self.nb_etats) : 
@@ -104,6 +87,60 @@ class Automate:
         
         return True
     
+    def est_standard(self) :
+
+        # Un automate est standard s'il n'a qu'une seule entrée et si aucune autre transition n'aboutit à cette entrée 
+
+        # On vérifie qu'il n'y a qu'une seule entrée
+        if len(self.initiaux) != 1 :
+            return False
+
+        unique_entree = self.initiaux[0]
+
+        # On vérifie qu'il n'y a aucune transition aboutissant à cette unique entrée
+        for transition in self.transitions :
+            if transition.etat2 == unique_entree :
+                return False
+
+        return True
+
+    def caracteristiques (self) : # Affiche les caractéristiques de l'automate
+        
+        # Ce suivant tableau correspond à [standard, déterministe, complet, minimisé]
+        # Il permettra de savoir quelles actions peuvent être proposées à l'utilisateur
+        caracteristiques = [False, False, False, False]
+
+        #est_minimal = self.est_minimal()
+
+        if self.est_standard():
+            caracteristiques[0] = True
+            print("\nL'automate est standard.")
+        else:
+            print("\nL'automate n'est pas standard.")
+
+        options = { # Dictionnaire qui répertorie et traite les différents cas pour le déterminisme
+            0 : "L'automate n'est pas déterministe, car il existe plusieurs états initiaux.",
+            1 : "L'automate n'est pas déterministe, car plusieurs transitions partent du même état avec le même symbole.",
+            2 : "L'automate est déterministe."
+        }
+
+        est_deterministe = self.est_deterministe()
+        print(options[est_deterministe])
+        
+        if est_deterministe == 2:
+            
+            caracteristiques[1] = True
+            
+            if self.est_complet():
+                caracteristiques[2] = True
+                print("L'automate est complet.")
+            else:
+                print("L'automate n'est pas complet.")
+
+        return caracteristiques
+
+            
+
     def completion(self): 
 
         #On regarde si l'automate est complet, le cas échéant pas besoin de le compléter
@@ -163,21 +200,3 @@ class Automate:
                 #si il manque un symbole pour un état de départ on l'ajoute au tableau de transitions avec comme état d'arrivée p
                 if (etat,symbole) not in transitions_par_etat:
                     self.transitions[(etat,symbole,p)]=True
-
-
-    def est_standard(self) : #return 1 si l'automate est standardisé, 0 s'il ne l'est pas 
-
-        #un automate est standardisé s'il n'a qu'une seule entrée et si aucune autre transition n'aboutit à cette entrée 
-
-        #on vérifie qu'il n'y a qu'une seule entrée
-        if len(self.initiaux) != 1 :
-            return 0
-
-        unique_entree = self.initiaux[0]
-
-        #on vérifie qu'il n'y a aucune transition aboutissant à cette unique entrée
-        for transition in self.transitions :
-            if transition.etat2 == unique_entree :
-                return 0
-
-        return 1
