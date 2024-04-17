@@ -55,13 +55,13 @@ def choix_action(caracteristiques): # Permet à l'utilisateur de choisir une act
         choix = input("Votre choix : ").lower
         if choix == "S":
             if not caracteristiques[0]: # On s'assure que l'automate n'est bien pas standard
-                #determinisation_automate()
+                #determinisation()
         elif choix == "DC":
             if not (caracteristiques[1] and caracteristiques[2]): # On s'assure que l'automate n'est bien pas déterministe complet
-                #standardisation_automate()
+                #standardisation()
         elif choix == "M":
             if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
-                #completion_automate()
+                #completion()
         
         print("Choix invalide. Réessayez.")
 """
@@ -72,8 +72,6 @@ while continuer:
     auto = choix_automate()
     auto.afficherAutomate()
     caracteristiques = auto.caracteristiques()
-    auto.completion()
-    auto.afficherAutomate()
     #choix_action(auto, caracteristiques)
     reponse = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
     if reponse.lower() != 'oui':

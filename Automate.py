@@ -53,10 +53,7 @@ class Automate:
             for symbole in range(self.nb_symboles): # On note les transitions à partir de chaque état pour chaque symbole
                 destinations = self.prochain_etat(etat, symbole)
                 if len(destinations) != 0:
-                    if destinations[0] == self.nb_etats:
-                        tableau[etat+1][symbole+2] = "P" # On écrit P pour l'état poubelle
-                    else:
-                        tableau[etat+1][symbole+2] = ','.join(str(x) for x in destinations)
+                    tableau[etat+1][symbole+2] = ','.join(str(x) for x in destinations)
                 else:
                     tableau[etat+1][symbole+2] = "--"
 
@@ -150,6 +147,7 @@ class Automate:
         
         # On rajoute un autre etat p qui remplace les vides
         p = self.nb_etats # Le nombre d'état correspond au numéro d'état de p puisque les états sont numérotés à partir de 0
+        self.nb_etats += 1
 
         # On fait une liste des transitions par état
         transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
@@ -170,14 +168,10 @@ class Automate:
                     newTrans = Transition(etat, symbole, p)
                     self.transitions.append(newTrans)
 
-    def standardiser_automate(self) :
-        if self.est_standard() : #On regarde si l'automate est standard, le cas échéant pas besoin de le compléter
-            print("L'automate est déjà standardisé.")
-            return self
+    def standardisation(self) :
 
-        i = self.nb_etats #on crée un nouvel état initial i (en utilisant le nb total d'états dans l'automate)
+        i = self.nb_etats # On crée un nouvel état initial i (en utilisant le nb total d'états dans l'automate)
         self.nb_etats += 1
-        self.initiaux = [i] #on met à jour la liste des états initiaux 
 
         term = False
         for etat_initial in self.initiaux : 
@@ -187,58 +181,13 @@ class Automate:
         if term : #si au moins un état initial est terminal Alors le nouvel état est terminal
             self.terminaux.append(i)
 
-        self.initiaux = [] #on supprime les aciens états initiaux 
-
         transitions_nouv = [] #on crée une nouvelle liste pour stocker les nouvelle transitions
         for transition in self.transitions : #si un des états de transition est un état initial qui existe Alors on met à jour les états pour pointer vers le nouvel état initial
             if transition.etat1 in self.initiaux :  
-                transition.etat2 = i
+                transition.etat1 = i
             if transition.etat2 in self.initiaux :
                 transition.etat2 = i
             transitions_nouv.append(transition)
         self.transitions = transitions_nouv
 
         return self
-    
-
-    def reconnaissance(self,chaine):
-        
-        #if self.est_deterministe!=2 :
-            #self.determinisation
-
-        if self.est_complet == False :
-            self.completion
-
-        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
-        
-        for transition in self.transitions: # On parcourt toutes les transitions
-            
-            etat_depart = transition.etat1
-            symbole = transition.symbole
-
-            if (etat_depart, symbole) not in transitions_par_etat: # On vérifie qu'il n'y soit pas déjà
-                transitions_par_etat[(etat_depart, symbole)] = True # On le rajoute dans le dictionnaire
-
-        #On initialise l'état de départ avec l'état initial
-        etat_de_depart = self.initiaux
-
-        #On parcourt la chaine
-        for lettre in chaine :
-            #On convertit en chiffre selon le code ascii
-            chiffre = ord(lettre)-97 
-            #On regarde si ce chiffre (donc la lettre) va quelque part à partir de l'état de départ
-            if (etat_de_depart,chiffre) not in transitions_par_etat :
-                return False
-            #Si cette transition existe bien, on regarde quel est l'état d'arrivée car ça va être notre nouvel état de départ
-            else :
-                for transition in self.transitions :
-                    if transition.etat1 == etat_de_depart and transition.symbole == chiffre :
-                        etat_de_depart = transition.etat2 
-                        break #on a trouvé l'état d'arrivée et c'est notre nouvel état de départ pas besoin de continuer la boucle
-        
-        #On regarde si le dernier état sur lequel on est arrivé est bien un état terminal
-        if etat_de_depart not in self.terminaux : 
-            return False
-        
-        return True 
-                
