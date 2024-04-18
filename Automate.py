@@ -141,7 +141,6 @@ class Automate:
 
         return caracteristiques
 
-            
 
     def completion(self): 
         
