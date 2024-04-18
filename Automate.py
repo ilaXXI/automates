@@ -232,3 +232,53 @@ class Automate:
             return False
 
         return True
+
+    def determinisation(self) :
+        self.terminaux, self.initiaux = self.initiaux, self.terminaux #on permute les états terminaux en états non terminaux et vice versa
+
+        #si l'automate n'est pas deterministe complet alors il faut d'abord le determiniser puis le compléter si besoin
+        if not self.est_deterministe == 2 :
+            self.determinisation()
+        
+        if not self.est_complet() :
+            self.completion()
+
+        
+        return True
+
+    def complementarisation(self) : 
+
+        #On vérifie que l'automate est déterministe et complet pour pouvoir faire son complémentaire
+        if self.est_deterministe != 2 and not self.est_complet : 
+            print("Complémentarisation impossible car l'auntomate n'est pas déterministe et complet.")
+            return None
+        
+        #On crée un nouvel automate qui reconnait le langage complementaire de l'automate donné
+        auto_complementaire = Automate(nb_symboles=self.nb_symboles, nb_etats=self.nb_etats, initiaux=self.initiaux, terminaux=self.terminaux, transitions=self.transitions)
+
+        #On définit les états non terminaux en soustrayant les états terminaux du nombre d'états total
+        non_terminaux = set(range(auto_complementaire.nb_etats)) - set(auto_complementaire.terminaux)
+
+        #On définit les nouveaux états terminaux qui sont les anciens états non terminaux définis précédemment 
+        auto_complementaire.terminaux = list(non_terminaux)
+
+        return auto_complementaire
+    
+
+    def minimisation(self) : #On suivra l'algorithme de Moore
+        #Il n'y a pas de tests à faire car la fonction prend un automate déterministe complet (selon l'énoncé)
+        #On va créer un nouvel automate pour pouvoir le retourner en tant qu'automate minimal 
+        auto_minimal = Automate(nb_symboles=self.nb_symboles, nb_etats=self.nb_etats, initiaux=self.initiaux, terminaux=self.terminaux, transitions=self.transitions)
+
+        #On a besoin de séparer les états terminaux et les états non terminaux 
+        #Les états terminaux étant déjà regroupés dans l'attributs terminaux de l'automate on va séparer les états non terminaux 
+        non_terminaux = set(range(auto_minimal.nb_etats)) - set(auto_minimal.terminaux)
+
+        return auto_minimal
+
+        
+    
+    
+
+
+
