@@ -276,6 +276,7 @@ class Automate:
 
         return auto_minimal
     
+    """
     def determinisation_et_completetion(self) : 
         
         if self.est_deterministe()!=2 :
@@ -283,7 +284,7 @@ class Automate:
 
         if self.est_complet()==False : 
             self.completion()
-
+    """
         
 
         
