@@ -233,9 +233,22 @@ class Automate:
             return False
 
         return True
-    
-    def complementarisation(self) : 
+
+    def determinisation(self) :
+        self.terminaux, self.initiaux = self.initiaux, self.terminaux #on permute les états terminaux en états non terminaux et vice versa
+
+        #si l'automate n'est pas deterministe complet alors il faut d'abord le determiniser puis le compléter si besoin
+        if not self.est_deterministe == 2 :
+            self.determinisation()
         
+        if not self.est_complet() :
+            self.completion()
+
+        
+        return True
+
+    def complementarisation(self) : 
+
         #On vérifie que l'automate est déterministe et complet pour pouvoir faire son complémentaire
         if self.est_deterministe != 2 and not self.est_complet : 
             print("Complémentarisation impossible car l'auntomate n'est pas déterministe et complet.")
@@ -251,4 +264,3 @@ class Automate:
         auto_complementaire.terminaux = list(non_terminaux)
 
         return auto_complementaire
-    
