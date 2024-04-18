@@ -275,6 +275,16 @@ class Automate:
         non_terminaux = set(range(auto_minimal.nb_etats)) - set(auto_minimal.terminaux)
 
         return auto_minimal
+    
+    def determinisation_et_completetion(self) : 
+        
+        if self.est_deterministe()!=2 :
+            self.determinisation()
+
+        if self.est_complet()==False : 
+            self.completion()
+
+        
 
         
     
