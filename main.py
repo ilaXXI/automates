@@ -1,19 +1,5 @@
 from Transition import *
 from Automate import *
-<<<<<<< HEAD
-def choix_automate (): 
-    automate = Automate(0, 0, [], [], [])
-    choix = int(input("Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44) "))
-    if choix >= 1 and choix <= 44:
-        nomFichier = f"automates_test/A8-{choix}.txt"
-        automate = lire_fichier(nomFichier)
-        automate.afficherAutomate()
-        print(automate.caracteristiques())
-        return automate
-    else:
-        print("Choix invalide. Veuillez choisir un nombre entre 1 et 44.")
-=======
->>>>>>> origin/main
 
 def lire_automate(nomFichier): # Renvoie un automate à partir d'un fichier
     
@@ -37,44 +23,6 @@ def lire_automate(nomFichier): # Renvoie un automate à partir d'un fichier
     automate = Automate(nb_symboles, nb_etats, initiaux, terminaux, transitions)
     return automate  
 
-<<<<<<< HEAD
-def choix_action(automate):
-    choix = int(input("Choisissez une action : \n"
-                      "1. Déterminisation de l'automate\n"
-                      "2. Standardisation de l'automate\n"
-                      "3. Complétion de l'automate\n"
-                      "4. Minimisation de l'automate\n"
-                      "5. Création du langage complémentaire\n"
-                      "Entrez votre choix (1-5) : "))
-    if choix == 1:
-        #automate.determinisation()
-    elif choix == 2:
-        #automate.standardisation()
-    elif choix == 3:
-        automate.completion()
-    elif choix == 4:
-        #automate.minimisation()
-    elif choix == 5:
-        automate.complementarisation()
-    else:
-        print("Choix invalide. Veuillez entrer un nombre entre 1 et 5.")
-
-
-#Test avec un automate inventé
-init = [2]
-term = [2, 3]
-trans1 = Transition(2, 0, 1)
-trans2 = Transition(2, 1, 2)
-trans3 = Transition(0, 1, 0)
-trans4 = Transition(1, 0, 2)
-trans_tab = [trans1, trans2, trans3, trans4]
-auto = Automate(3, 4, init, term, trans_tab)
-
-auto.afficherAutomate()
-print(auto.est_deterministe())
-auto.complementarisation()
-auto.afficherAutomate()
-=======
 def choix_automate (): 
     reponse_valide = False;
     while not reponse_valide:
@@ -117,20 +65,14 @@ def choix_action(caracteristiques): # Permet à l'utilisateur de choisir une act
         
         print("Choix invalide. Réessayez.")
 """
->>>>>>> origin/main
 
 # Début du main
 continuer = True
 while continuer:
-<<<<<<< HEAD
-    automate = choix_automate()
-    #choix_action(automate)
-=======
     auto = choix_automate()
     auto.afficherAutomate()
     caracteristiques = auto.caracteristiques()
     #choix_action(auto, caracteristiques)
->>>>>>> origin/main
     reponse = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
     if reponse.lower() != 'oui':
         continuer = False
