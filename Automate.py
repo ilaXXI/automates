@@ -264,3 +264,22 @@ class Automate:
         auto_complementaire.terminaux = list(non_terminaux)
 
         return auto_complementaire
+    
+
+    def minimisation(self) : #On suivra l'algorithme de Moore
+        #Il n'y a pas de tests à faire car la fonction prend un automate déterministe complet (selon l'énoncé)
+        #On va créer un nouvel automate pour pouvoir le retourner en tant qu'automate minimal 
+        auto_minimal = Automate(nb_symboles=self.nb_symboles, nb_etats=self.nb_etats, initiaux=self.initiaux, terminaux=self.terminaux, transitions=self.transitions)
+
+        #On a besoin de séparer les états terminaux et les états non terminaux 
+        #Les états terminaux étant déjà regroupés dans l'attributs terminaux de l'automate on va séparer les états non terminaux 
+        non_terminaux = set(range(auto_minimal.nb_etats)) - set(auto_minimal.terminaux)
+
+        return auto_minimal
+
+        
+    
+    
+
+
+
