@@ -189,81 +189,117 @@ class Automate:
             transitions_nouv.append(transition)
         self.transitions = transitions_nouv
 
-        self.initiaux = [i] #on met à jour la liste des états initiaux 
+        self.initiaux = [i] # On met à jour la liste des états initiaux 
 
-    
     def reconnaissance(self,chaine) : 
-        
-        #if self.est_deterministe == False : 
-        #    self.determinisation
-
-        if self.est_complet == False :
-            self.completion 
-
-        transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
-        
-        for transition in self.transitions: # On parcourt toutes les transitions
-            
-            etat_depart = transition.etat1
-            symbole = transition.symbole
-
-            if (etat_depart, symbole) not in transitions_par_etat: # On vérifie qu'il n'y soit pas déjà
-                transitions_par_etat[(etat_depart, symbole)] = True # On le rajoute dans le dictionnaire
 
         #On initialise l'état de départ à l'état initial
-        etat_de_depart = self.initiaux
+        etat_de_depart = self.initiaux[0]
 
         #On parcourt la chaine de caractères
         for lettre in chaine :
             #On la convertit en chiffre
             chiffre = ord(lettre)-97
-            #On regarde si elle fait partie des transitions à partir de l'état de départ
-            if (etat_de_depart,chiffre) not in transitions_par_etat : 
+
+            # On va chercher l'état d'arrivée s'il existe qui devient notre nouvel état de départ
+            transition_existe = False 
+            for transition in self.transitions :
+                if transition.etat1 == etat_de_depart and transition.symbole == chiffre : 
+                    etat_de_depart = transition.etat2
+                    transition_existe = True
+                    break # On sort de la boucle car on a trouvé
+            if not transition_existe:
                 return False
-            #Si elle en fait bien partie on trouve l'état d'arrivée qui devient notre nouvel état de départ
-            else : 
-                for transition in self.transitions :
-                    if transition.etat1 == etat_de_depart and transition.symbole == chiffre : 
-                        etat_de_depart = transition.etat2
-                        break #On sort de la boucle car on a trouvé
-        
-        #On regarde si l'état sur lequel on arrive est terminal
+            
+        # On regarde si l'état sur lequel on arrive est terminal
         if etat_de_depart not in self.terminaux : 
             return False
 
         return True
 
-    def determinisation(self) :
-        self.terminaux, self.initiaux = self.initiaux, self.terminaux #on permute les états terminaux en états non terminaux et vice versa
-
-        #si l'automate n'est pas deterministe complet alors il faut d'abord le determiniser puis le compléter si besoin
-        if not self.est_deterministe == 2 :
-            self.determinisation()
-        
-        if not self.est_complet() :
-            self.completion()
-
-        
-        return True
 
     def complementarisation(self) : 
-
-        #On vérifie que l'automate est déterministe et complet pour pouvoir faire son complémentaire
-        if self.est_deterministe != 2 and not self.est_complet : 
-            print("Complémentarisation impossible car l'auntomate n'est pas déterministe et complet.")
-            return None
         
-        #On crée un nouvel automate qui reconnait le langage complementaire de l'automate donné
-        auto_complementaire = Automate(nb_symboles=self.nb_symboles, nb_etats=self.nb_etats, initiaux=self.initiaux, terminaux=self.terminaux, transitions=self.transitions)
-
         #On définit les états non terminaux en soustrayant les états terminaux du nombre d'états total
-        non_terminaux = set(range(auto_complementaire.nb_etats)) - set(auto_complementaire.terminaux)
+        non_terminaux = set(range(self.nb_etats)) - set(self.terminaux)
 
         #On définit les nouveaux états terminaux qui sont les anciens états non terminaux définis précédemment 
-        auto_complementaire.terminaux = list(non_terminaux)
+        self.terminaux = list(non_terminaux)
 
-        return auto_complementaire
-    
+    def epsilon_cloture(self, etats):
+        # Algorithme pour fermer un ensemble d'états ε
+        fermeture = set(etats) # Ensemble des états dans la cloture
+        stack = list(etats) # liste des états que l'on a pas encore traités
+
+        while stack:
+            etat = stack.pop()
+            for transition in self.transitions:
+                if transition.etat1 == etat and transition.symbole == -1: # Si un état a une transition ε vers un autre état, on le rajoute dans la cloture
+                    etat_suivant = transition.etat2
+                    if etat_suivant not in fermeture: # Si on peut rajouter des états déjà dans la cloture, on risquerait de boucler à l'infini
+                        fermeture.add(etat_suivant)
+                        stack.append(etat_suivant)
+
+        return fermeture
+
+    def calculer_transitions(self, ensemble_etats, symbole): # Calculer les transitions pour un ensemble d'états donné et un symbole donné
+        etats_suivants = set()
+        for transition in self.transitions:
+            if transition.etat1 in ensemble_etats and transition.symbole == symbole:
+                etats_suivants.add(transition.etat2)
+        return self.epsilon_cloture(etats_suivants)
+
+    def determinisation_completion(self):
+        
+        etats_non_traites = [set(self.initiaux)]
+        etats_traites = []
+        transitions = []
+        terminaux = []
+
+        while etats_non_traites:
+            print("test0")
+            ensemble_etats = self.epsilon_cloture(etats_non_traites.pop()) # Un ensemble d'états de l'automate de base qui devient un état dans l'AFDC
+            etats_traites.append(ensemble_etats)
+            print("On regarde l'etat ", ensemble_etats)
+            if bool(set(ensemble_etats) & set(self.terminaux)): # Si un des états dans l'ensemble est terminal
+                terminaux.append(ensemble_etats)                # L'ensemble devient un état terminal
+                print("l'etat etait terminal")
+
+            for symbole in range(self.nb_symboles):
+                print("On regarde le symbole ", symbole)
+                etats_suivants = self.calculer_transitions(ensemble_etats, symbole)
+                print("L'ensemble des états suivants est : ", etats_suivants)
+                if etats_suivants:
+                    transitions.append(Transition(ensemble_etats, symbole, etats_suivants))
+                    if (etats_suivants not in etats_non_traites) and (etats_suivants not in etats_traites):
+                        etats_non_traites.append(etats_suivants)
+                        print("On rajoute ces etats dans ceux à traiter")
+        
+        nb_etats = 0
+        for etat in etats_traites: # On cherche maintenant à renomer les états avec des numéros
+
+            if etat in terminaux: # Si l'état est terminal, on va le trouver et le renommer dans le tableaux des terminaux
+                for i in range(len(terminaux)):
+                    if terminaux[i] == etat:
+                        terminaux[i] = nb_etats
+                        break
+            
+            for transition in transitions: # On renomme les états dans les transitions
+                if transition.etat1 == etat:
+                    transition.etat1 = nb_etats
+                if transition.etat2 == etat:
+                    transition.etat2 = nb_etats
+
+            nb_etats += 1
+
+        self.nb_etats = nb_etats
+        self.initiaux = [0]
+        self.terminaux = terminaux
+        self.transitions = transitions
+
+        if not self.est_complet():
+            self.completion()
+
 
     def minimisation(self) : #On suivra l'algorithme de Moore
         #Il n'y a pas de tests à faire car la fonction prend un automate déterministe complet (selon l'énoncé)
@@ -276,15 +312,7 @@ class Automate:
 
         return auto_minimal
     
-    """
-    def determinisation_et_completetion(self) : 
-        
-        if self.est_deterministe()!=2 :
-            self.determinisation()
 
-        if self.est_complet()==False : 
-            self.completion()
-    """
         
 
         

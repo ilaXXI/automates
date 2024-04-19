@@ -34,11 +34,13 @@ def choix_automate ():
         else:
             print("Choix invalide. Veuillez choisir un nombre entre 1 et 44.")
 
-"""
-def choix_action(caracteristiques): # Permet à l'utilisateur de choisir une action
+
+def choix_action(automate, caracteristiques): # Permet à l'utilisateur de choisir une action
     
     choix_invalide = True
     while choix_invalide:
+        
+        changement_de_l_automate = True # Si c'est true, l'automate a été modifié
 
         print("Choisissez une action : \n")
         
@@ -49,31 +51,88 @@ def choix_action(caracteristiques): # Permet à l'utilisateur de choisir une act
             print("DC - Obtention de l'automate deterministe complet équivalent")
 
         if not (caracteristiques[3]):
-            print("M - Minimisation de l'automate\n")
+            print("M - Minimisation de l'automate")
 
+        print("C - Obtention d'un automate reconnaissant le langage complémentaire")
 
-        choix = input("Votre choix : ").lower
-        if choix == "S":
+        print("R - Test de la reconnaissance d'un mot\n")
+
+        choix = input("Votre choix : ").lower()
+
+        if choix == "s":
             if not caracteristiques[0]: # On s'assure que l'automate n'est bien pas standard
-                #determinisation()
-        elif choix == "DC":
+                choix_invalide = False
+                automate.standardisation()
+
+        elif (choix == "dc") or (choix == "c"):
             if not (caracteristiques[1] and caracteristiques[2]): # On s'assure que l'automate n'est bien pas déterministe complet
-                #standardisation()
-        elif choix == "M":
+                choix_invalide = False
+                if caracteristiques[1]: # S'il est déjà déterministe on ne fait que le compléter
+                    automate.completion()
+                else:
+                    automate.determinisation_completion()
+            
+            if choix == "c":
+                choix_invalide = False
+                print("On obtient l'automate reconnaissant le langage complémentaire à partir de l'automate déterministe complet équivalent.")
+                automate.complementarisation()
+
+        elif choix == "m":
             if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
-                #completion()
+                choix_invalide = False
+                automate.minimisation()
         
-        print("Choix invalide. Réessayez.")
-"""
+        elif choix == "r":
+            choix_invalide = False
+            changement_de_l_automate = False
+
+            # On crée une copie de l'automate
+            automate_dc = Automate(automate.nb_symboles, automate.nb_etats, automate.initiaux, automate.terminaux, automate.transitions)
+
+            if not (caracteristiques[1] and caracteristiques[2]): # S'il le faut on déterminise et complète cet automate, nécéssaire pour la reconnaissance
+                if caracteristiques[1]: 
+                    automate_dc.completion()
+                else:
+                    automate_dc.determinisation_completion()            
+
+            chaine = input("Quelle mot voulez-vous tester ? ")
+            mot_reconnu = automate_dc.reconnaissance(chaine)
+            
+            if mot_reconnu:
+                print("Le mot ", chaine, " est reconnu par l'automate.")
+            else:
+                print("Le mot ", chaine, " n'est pas reconnu par l'automate.")
+        
+        if choix_invalide:
+            print("Choix invalide. Réessayez.")
+        else:
+            return changement_de_l_automate
+
 
 # Début du main
 continuer = True
 while continuer:
+    
     auto = choix_automate()
+    print("\n\n")
     auto.afficherAutomate()
     caracteristiques = auto.caracteristiques()
-    #choix_action(auto, caracteristiques)
-    reponse = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
-    if reponse.lower() != 'oui':
+    
+    automate_courant = True # Tant que c'est true, on continue d'étudier cet automate  
+    while automate_courant:
+        
+        changement_de_l_automate = choix_action(auto, caracteristiques)
+        if changement_de_l_automate:
+            print("Voici votre nouvel automate :")
+            auto.afficherAutomate()
+            caracteristiques = auto.caracteristiques()
+        
+        reponse1 = input("Voulez-vous effectuer une autre action ? (Oui/Non): ")
+        if reponse1.lower() != 'oui':
+            automate_courant = False
+    
+    reponse2 = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
+    if reponse2.lower() != 'oui':
         continuer = False
+
 print("Fin du programme.")
