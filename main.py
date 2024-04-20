@@ -77,10 +77,11 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 print("On obtient l'automate reconnaissant le langage complémentaire à partir de l'automate déterministe complet équivalent.")
                 automate.complementarisation()
 
-        elif choix == "m":
-            if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
-                choix_invalide = False
-                automate.minimisation()
+            elif choix == "m":
+                if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
+                    choix_invalide = False
+                    table_correspondance = automate.minimisation()
+                    print("Voici la table de correspondance des anciens etats et les nouveaux, sous la forme (anciens : nouveau)\n\n", table_correspondance)
 
         elif choix == "r":
             choix_invalide = False
@@ -123,7 +124,7 @@ while continuer:
         
         changement_de_l_automate = choix_action(auto, caracteristiques)
         if changement_de_l_automate:
-            print("Voici votre nouvel automate :")
+            print("\nVoici votre nouvel automate :")
             auto.afficherAutomate()
             caracteristiques = auto.caracteristiques()
         

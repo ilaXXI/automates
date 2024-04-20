@@ -33,11 +33,19 @@ class Automate:
             print("\n" + "-" * (sum(max_largeurs) + len(max_largeurs) * 3 + 1))
 
     def afficherAutomate(self):
-        tableau = [[" " for i in range(self.nb_symboles + 2)] for i in range(self.nb_etats + 1)]
-
+        asynchrone = self.est_asynchrone()        
+        
+        if asynchrone: # Si l'automate est asynchrone, il y aura une colonne de plus
+            tableau = [[" " for i in range(self.nb_symboles + 3)] for i in range(self.nb_etats + 1)]
+        else:
+            tableau = [[" " for i in range(self.nb_symboles + 2)] for i in range(self.nb_etats + 1)]
+        
         for symbole in range(self.nb_symboles): # On liste les symboles de l'alphabet en haut du tableau
             tableau[0][symbole+2] = chr(97+symbole) # (Pour afficher le bon caractère)
         
+        if asynchrone: # On rajoute epsilon tout à droite
+            tableau[0][self.nb_symboles+2] = "e"
+
         for etat in range(self.nb_etats): # On remplit ligne par ligne
             
             if self.est_etat_initial(etat): # On précise si l'état est une entrée et/ou une sortie
@@ -56,15 +64,31 @@ class Automate:
                     tableau[etat+1][symbole+2] = ','.join(str(x) for x in destinations)
                 else:
                     tableau[etat+1][symbole+2] = "--"
+            
+            if asynchrone: # Si l'automate est asycnhrone, on rajoute ses transitions epsilon
+                destinations = self.prochain_etat(etat, -1)
+                if len(destinations) != 0:
+                    tableau[etat+1][self.nb_symboles+2] = ','.join(str(x) for x in destinations)
+                else:
+                    tableau[etat+1][self.nb_symboles+2] = "--"
+
 
         self.afficherTableau(tableau)
 
+    def est_asynchrone(self):
+        for transition in self.transitions:
+            if transition.symbole == -1:
+                return True
+        return False
 
     def est_deterministe(self): # Renvoie 0 si il y a plusieurs états initiaux, 1 si deux flèches partent du même état avec le même symbole, et 2 si l'automate est déterministe
         
         if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
             return 0
         
+        if self.est_asynchrone: # S'il est asynchrone, il n'est pas déterministe
+            return 3
+
         transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
         
         for transition in self.transitions: # On parcourt toutes les transitions
@@ -112,14 +136,20 @@ class Automate:
         # Il permettra de savoir quelles actions peuvent être proposées à l'utilisateur
         caracteristiques = [False, False, False, False]
 
+        if self.est_asynchrone():
+            print("\nL'automate est asynchrone.")
+        else:
+            print("\nL'automate est synchrone.")
+
         if self.est_standard():
             caracteristiques[0] = True
-            print("\nL'automate est standard.")
+            print("L'automate est standard.")
         else:
-            print("\nL'automate n'est pas standard.")
+            print("L'automate n'est pas standard.")
 
         options = { # Dictionnaire qui répertorie et traite les différents cas pour le déterminisme
             0 : "L'automate n'est pas déterministe, car il existe plusieurs états initiaux.",
+            3 : "L'automate n'est pas déterministe, car il est asynchrone",
             1 : "L'automate n'est pas déterministe, car plusieurs transitions partent du même état avec le même symbole.",
             2 : "L'automate est déterministe."
         }
@@ -131,18 +161,17 @@ class Automate:
             
             caracteristiques[1] = True
             
-            if self.est_complet():
+            if not self.est_complet():
+                print("L'automate n'est pas complet.")
+            else:
                 caracteristiques[2] = True
                 print("L'automate est complet.")
-            else:
-                print("L'automate n'est pas complet.")
         
-
-        if self.est_minimal() :
-            caracteristiques[3] = True 
-            print("L'automate est minimal.")
-        else:
-            print("L'automate n'est pas minimal.")
+                if self.est_minimal() :
+                    caracteristiques[3] = True 
+                    print("L'automate est minimal.")
+                else:
+                    print("L'automate n'est pas minimal.\n")
 
         return caracteristiques
 
@@ -306,21 +335,36 @@ class Automate:
             self.completion()
 
 
-    def est_minimal(self):
-        # On Vérifie que l'automate est bien complet et déterministe
-        if not self.est_complet() or self.est_deterministe() :
-            return False
+    def etats_accessibles(self, etat): # Détermine l'ensemble des états accessibles à partir d'un état dans un AFDC
+        destinations = [etat]
+        auto_accessible = False # On met l'état lui même dans l'ensemble pour pouvoir rentrer dans la boucle dès le début, mais s'il n'est pas auto accessible on le retirera
         
-        # On vérifie que pour chaque couple d'états p et q leurs tableaux de destinations sontt différents
+        for etat_courant in destinations:
+            for symbole in range(self.nb_symboles):
+                etat_suivant = self.prochain_etat(etat_courant, symbole)
+                if etat_suivant[0] == etat:
+                    auto_accessible = True
+                if etat_suivant[0] not in destinations:
+                    destinations.append(etat_suivant[0])
+        
+        if not auto_accessible:
+            destinations.pop(0)
+
+        return destinations
+
+    def est_minimal(self):
+        
+        # On vérifie que pour chaque couple d'états p et q il existe un mot qui les relie (càd qu'on peut accéder à l'un depuis l'autre)
         for p in range(self.nb_etats):
 
             for q in range(p + 1, self.nb_etats): 
-
-                if self.comparaison_destination(p, q):
+                
+                #print("Depuis p = ", p, " on va vers ", self.etats_accessibles(p), "\n et depuis q = ", q, "on va vers ", self.etats_accessibles(q))
+                if not ((p in self.etats_accessibles(q)) or (q in self.etats_accessibles(p))):
                     return False  
         
         return True  
-
+    """
     def comparaison_destination(self, p, q):
         # Grâce à la fonction prochain_etat on récupère le tableau des destinations de p et q pour chaque symbole
         for symbole in range(self.nb_symboles):
@@ -331,71 +375,70 @@ class Automate:
             if destinations_p != destinations_q:
                 return False 
             
-        return True  
-
+        return True  """
 
     def minimisation(self):
-        #On sépare les groupes terminaux et les groupes non terminaux 
+        # On sépare les groupes terminaux et les groupes non terminaux 
         terminaux = set(self.terminaux)
         non_terminaux = set(range(self.nb_etats)) - terminaux
 
-        #On crée notre premier groupe de notre itération 0 
+        # On crée notre premier groupe de notre itération 0 
         groupes = [terminaux, non_terminaux] 
 
-        #On va itérer jusqu'à ce qu'il n'y ait plus de séparation de groupes possible
+        # On va itérer jusqu'à ce qu'il n'y ait plus de séparation de groupes possible
         while True:
-            #On initialise une liste pour stocker les nouveaux groupes à chaque itération
+            # On initialise une liste pour stocker les nouveaux groupes à chaque itération
             nouveaux_groupes = []  
             
 
             for groupe in groupes:
                 
-                #On crée un dictionnaire pour stocker les transitions de chaque état du groupe pour chaque symbole de l'alphabet de l'automate
+                # On crée un dictionnaire pour stocker les transitions de chaque état du groupe pour chaque symbole de l'alphabet de l'automate
                 transitions_groupes = {symbole: [] for symbole in range(self.nb_symboles)}
             
                 for etat in groupe:
                     for symbole in range(self.nb_symboles):
-                        #On récupère les destinations de chaque état pour chaque symbole de l'alphabet
-                        destinations = self.prochain_etat(etat, symbole)
+                        # On récupère la destination de chaque état pour chaque symbole de l'alphabet
+                        destination = self.prochain_etat(etat, symbole)
                         
                         for g in range(len(groupes)):
-                            #Si les destinations sont dans le groupe, on ajoute le groupe dans le dictionnaire
-                            if set(destinations).issubset(set(groupes[g])):
+                            # Si la destination est dans le groupe, on ajoute le groupe dans le dictionnaire
+                            if set(destination).issubset(set(groupes[g])):
                                 transitions_groupes[symbole].append(g)
                                 break
             
                 
                 for symbole, destinations in transitions_groupes.items():
-                    #Si les destinations sont dans plusieurs groupes, on sépare le groupe en plusieurs groupes
+                    # Si les destinations sont dans plusieurs groupes, on sépare le groupe en plusieurs groupes
                     if len(set(destinations)) > 1:
                         
                         for dest in set(destinations):
-                            #On crée des nouveaux groupes en fonction des destinations
-                            nouveaux_groupes.append([groupe[i] for i in range(len(groupe)) if destinations[i] == dest])
+                            # On crée des nouveaux groupes en fonction des destinations
+                            nouveaux_groupes.append([list(groupe)[i] for i in range(len(groupe)) if destinations[i] == dest])
                         break
                 else:
                     nouveaux_groupes.append(groupe)  
             
-            #Si aucun groupe créé on sort de la boucle
+            # Si aucun groupe créé on sort de la boucle
             if nouveaux_groupes == groupes : 
                 break 
 
-            #On met à jour les groupes
+            # On met à jour les groupes
             groupes = nouveaux_groupes[:]
 
-        #On crée un dictionnaire pour stocker la correspondance entre les anciens et les nouveaux noms des états
+        # On crée un dictionnaire pour stocker la correspondance entre les anciens et les nouveaux noms des états
         table_correspondance = {} 
 
-        #On initialise un compteur pour les nouveaux noms des états
+        # On initialise un compteur pour les nouveaux noms des états
         nouveau_nom = 0 
 
-        #On remplit la table de correspondance qui fait le lien entre les nouveaux et les anciens noms des états
+        # On remplit la table de correspondance qui fait le lien entre les nouveaux et les anciens noms des états
         for g in range(len(groupes)):
             for etat in groupes[g]:
                 table_correspondance[etat] = nouveau_nom
             nouveau_nom += 1
         
-        #On met à jour les transitions 
+        # On met à jour les transitions 
         for transition in self.transitions:
             transition.etat1 = table_correspondance[transition.etat1]
             transition.etat2 = table_correspondance[transition.etat2]
