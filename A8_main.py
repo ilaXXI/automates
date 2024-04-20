@@ -1,5 +1,5 @@
-from Transition import *
-from Automate import *
+from A8_Transition import *
+from A8_Automate import *
 
 def lire_automate(nomFichier): # Renvoie un automate à partir d'un fichier
     
@@ -73,7 +73,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                     table_correspondance = automate.determinisation_completion()
                     print("Suite à la déterminisation et/ou complétion, voici le tableau des relations entre les anciens et nouveaux états sous la forme (anciens : nouveau)\n\n", table_correspondance)
                 if choix == "m":
-                    print("\nVoici l'automate déterministe complet transitoire : \n")
+                    print("\nVoici l'automate déterministe complet : \n")
                     automate.afficherAutomate()
 
             if choix == "c":
@@ -87,7 +87,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 if reussite:
                     print("Suite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
                 else:
-                    print("L'automate etait deja minimal !\n")
+                    print("L'automate est minimal !\n")
                     changement_de_l_automate = False
 
         elif choix == "r":

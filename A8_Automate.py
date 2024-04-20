@@ -1,4 +1,4 @@
-from Transition import *
+from A8_Transition import *
 
 class Automate:
     def __init__(self, nb_symboles, nb_etats, initiaux, terminaux, transitions):
@@ -320,7 +320,7 @@ class Automate:
 
             nb_etats += 1
 
-        self.nb_etats = nb_etats
+        self.nb_etats = nb_etats 
         self.initiaux = [0]
         self.terminaux = terminaux
         self.transitions = transitions
@@ -329,23 +329,6 @@ class Automate:
             self.completion()
 
         return table_correspondance
-
-    def etats_accessibles(self, etat): # Détermine l'ensemble des états accessibles à partir d'un état dans un AFDC
-        destinations = [etat]
-        auto_accessible = False # On met l'état lui même dans l'ensemble pour pouvoir rentrer dans la boucle dès le début, mais s'il n'est pas auto accessible on le retirera
-        
-        for etat_courant in destinations:
-            for symbole in range(self.nb_symboles):
-                etat_suivant = self.prochain_etat(etat_courant, symbole)
-                if etat_suivant[0] == etat:
-                    auto_accessible = True
-                if etat_suivant[0] not in destinations:
-                    destinations.append(etat_suivant[0])
-        
-        if not auto_accessible:
-            destinations.pop(0)
-
-        return destinations
 
 
     def minimisation(self):
