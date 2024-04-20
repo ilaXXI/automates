@@ -72,7 +72,10 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 else:
                     table_correspondance = automate.determinisation_completion()
                     print("Suite à la déterminisation et/ou complétion, voici le tableau des relations entre les anciens et nouveaux états sous la forme (anciens : nouveau)\n\n", table_correspondance)
-            
+                if choix == "m":
+                    print("\nVoici l'automate déterministe complet transitoire : \n")
+                    automate.afficherAutomate()
+
             if choix == "c":
                 choix_invalide = False
                 print("On obtient l'automate reconnaissant le langage complémentaire à partir de l'automate déterministe complet équivalent.")
@@ -82,7 +85,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
                     choix_invalide = False
                     table_correspondance = automate.minimisation()
-                    print("Voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
+                    print("Suite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (anciens : nouveau)\n\n", table_correspondance)
 
         elif choix == "r":
             choix_invalide = False

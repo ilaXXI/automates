@@ -424,14 +424,10 @@ class Automate:
         # On crée un dictionnaire pour stocker la correspondance entre les anciens et les nouveaux noms des états
         table_correspondance = {} 
 
-        # On initialise un compteur pour les nouveaux noms des états
-        nouveau_nom = 0 
-
         # On remplit la table de correspondance qui fait le lien entre les nouveaux et les anciens noms des états
         for g in range(len(groupes)):
             for etat in groupes[g]:
-                table_correspondance[etat] = nouveau_nom
-            nouveau_nom += 1
+                table_correspondance[etat] = g
         
         # On met à jour les transitions 
         for transition in self.transitions:
