@@ -291,23 +291,17 @@ class Automate:
         terminaux = []
 
         while etats_non_traites:
-            print("test0")
             ensemble_etats = self.epsilon_cloture(etats_non_traites.pop()) # Un ensemble d'états de l'automate de base qui devient un état dans l'AFDC
             etats_traites.append(ensemble_etats)
-            print("On regarde l'etat ", ensemble_etats)
             if bool(set(ensemble_etats) & set(self.terminaux)): # Si un des états dans l'ensemble est terminal
                 terminaux.append(ensemble_etats)                # L'ensemble devient un état terminal
-                print("l'etat etait terminal")
 
             for symbole in range(self.nb_symboles):
-                print("On regarde le symbole ", symbole)
                 etats_suivants = self.calculer_transitions(ensemble_etats, symbole)
-                print("L'ensemble des états suivants est : ", etats_suivants)
                 if etats_suivants:
                     transitions.append(Transition(ensemble_etats, symbole, etats_suivants))
                     if (etats_suivants not in etats_non_traites) and (etats_suivants not in etats_traites):
                         etats_non_traites.append(etats_suivants)
-                        print("On rajoute ces etats dans ceux à traiter")
         
 
         table_correspondance = {} 
