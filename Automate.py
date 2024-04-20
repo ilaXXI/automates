@@ -309,9 +309,14 @@ class Automate:
                         etats_non_traites.append(etats_suivants)
                         print("On rajoute ces etats dans ceux à traiter")
         
-        nb_etats = 0
-        for etat in etats_traites: # On cherche maintenant à renomer les états avec des numéros
 
+        table_correspondance = {} 
+
+        nb_etats = 0
+        for etat in etats_traites: # On cherche maintenant à renommer les états avec des numéros
+            
+            table_correspondance[nb_etats] = etat
+            
             if etat in terminaux: # Si l'état est terminal, on va le trouver et le renommer dans le tableaux des terminaux
                 for i in range(len(terminaux)):
                     if terminaux[i] == etat:
@@ -334,6 +339,7 @@ class Automate:
         if not self.est_complet():
             self.completion()
 
+        return table_correspondance
 
     def etats_accessibles(self, etat): # Détermine l'ensemble des états accessibles à partir d'un état dans un AFDC
         destinations = [etat]
@@ -364,18 +370,7 @@ class Automate:
                     return False  
         
         return True  
-    """
-    def comparaison_destination(self, p, q):
-        # Grâce à la fonction prochain_etat on récupère le tableau des destinations de p et q pour chaque symbole
-        for symbole in range(self.nb_symboles):
-            destinations_p = self.prochain_etat(p, symbole)
-            destinations_q = self.prochain_etat(q, symbole)
 
-            # On compare les 2 tableaux obtenus
-            if destinations_p != destinations_q:
-                return False 
-            
-        return True  """
 
     def minimisation(self):
         # On sépare les groupes terminaux et les groupes non terminaux 

@@ -70,7 +70,8 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 if caracteristiques[1]: # S'il est déjà déterministe on ne fait que le compléter
                     automate.completion()
                 else:
-                    automate.determinisation_completion()
+                    table_correspondance = automate.determinisation_completion()
+                    print("Suite à la déterminisation et/ou complétion, voici le tableau des relations entre les anciens et nouveaux états sous la forme (anciens : nouveau)\n\n", table_correspondance)
             
             if choix == "c":
                 choix_invalide = False
@@ -81,7 +82,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
                     choix_invalide = False
                     table_correspondance = automate.minimisation()
-                    print("Voici la table de correspondance des anciens etats et les nouveaux, sous la forme (anciens : nouveau)\n\n", table_correspondance)
+                    print("Voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
 
         elif choix == "r":
             choix_invalide = False
@@ -124,7 +125,7 @@ while continuer:
         
         changement_de_l_automate = choix_action(auto, caracteristiques)
         if changement_de_l_automate:
-            print("\nVoici votre nouvel automate :")
+            print("\nVoici votre nouvel automate :\n")
             auto.afficherAutomate()
             caracteristiques = auto.caracteristiques()
         
