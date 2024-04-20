@@ -112,8 +112,6 @@ class Automate:
         # Il permettra de savoir quelles actions peuvent être proposées à l'utilisateur
         caracteristiques = [False, False, False, False]
 
-        #est_minimal = self.est_minimal()
-
         if self.est_standard():
             caracteristiques[0] = True
             print("\nL'automate est standard.")
@@ -138,6 +136,13 @@ class Automate:
                 print("L'automate est complet.")
             else:
                 print("L'automate n'est pas complet.")
+        
+
+        if self.est_minimal() :
+            caracteristiques[3] = True 
+            print("L'automate est minimal.")
+        else:
+            print("L'automate n'est pas minimal.")
 
         return caracteristiques
 
@@ -301,17 +306,112 @@ class Automate:
             self.completion()
 
 
-    def minimisation(self) : #On suivra l'algorithme de Moore
-        #Il n'y a pas de tests à faire car la fonction prend un automate déterministe complet (selon l'énoncé)
-        #On va créer un nouvel automate pour pouvoir le retourner en tant qu'automate minimal 
-        auto_minimal = Automate(nb_symboles=self.nb_symboles, nb_etats=self.nb_etats, initiaux=self.initiaux, terminaux=self.terminaux, transitions=self.transitions)
+    def est_minimal(self):
+        # On Vérifie que l'automate est bien complet et déterministe
+        if not self.est_complet() or self.est_deterministe() :
+            return False
+        
+        # On vérifie que pour chaque couple d'états p et q leurs tableaux de destinations sontt différents
+        for p in range(self.nb_etats):
 
-        #On a besoin de séparer les états terminaux et les états non terminaux 
-        #Les états terminaux étant déjà regroupés dans l'attributs terminaux de l'automate on va séparer les états non terminaux 
-        non_terminaux = set(range(auto_minimal.nb_etats)) - set(auto_minimal.terminaux)
+            for q in range(p + 1, self.nb_etats): 
 
-        return auto_minimal
+                if self.comparaison_destination(p, q):
+                    return False  
+        
+        return True  
+
+    def comparaison_destination(self, p, q):
+        # Grâce à la fonction prochain_etat on récupère le tableau des destinations de p et q pour chaque symbole
+        for symbole in range(self.nb_symboles):
+            destinations_p = self.prochain_etat(p, symbole)
+            destinations_q = self.prochain_etat(q, symbole)
+
+            # On compare les 2 tableaux obtenus
+            if destinations_p != destinations_q:
+                return False 
+            
+        return True  
+
+
+    def minimisation(self):
+        #On sépare les groupes terminaux et les groupes non terminaux 
+        terminaux = set(self.terminaux)
+        non_terminaux = set(range(self.nb_etats)) - terminaux
+
+        #On crée notre premier groupe de notre itération 0 
+        groupes = [terminaux, non_terminaux] 
+
+        #On va itérer jusqu'à ce qu'il n'y ait plus de séparation de groupes possible
+        while True:
+            #On initialise une liste pour stocker les nouveaux groupes à chaque itération
+            nouveaux_groupes = []  
+            
+
+            for groupe in groupes:
+                
+                #On crée un dictionnaire pour stocker les transitions de chaque état du groupe pour chaque symbole de l'alphabet de l'automate
+                transitions_groupes = {symbole: [] for symbole in range(self.nb_symboles)}
+            
+                for etat in groupe:
+                    for symbole in range(self.nb_symboles):
+                        #On récupère les destinations de chaque état pour chaque symbole de l'alphabet
+                        destinations = self.prochain_etat(etat, symbole)
+                        
+                        for g in range(len(groupes)):
+                            #Si les destinations sont dans le groupe, on ajoute le groupe dans le dictionnaire
+                            if set(destinations).issubset(set(groupes[g])):
+                                transitions_groupes[symbole].append(g)
+                                break
+            
+                
+                for symbole, destinations in transitions_groupes.items():
+                    #Si les destinations sont dans plusieurs groupes, on sépare le groupe en plusieurs groupes
+                    if len(set(destinations)) > 1:
+                        
+                        for dest in set(destinations):
+                            #On crée des nouveaux groupes en fonction des destinations
+                            nouveaux_groupes.append([groupe[i] for i in range(len(groupe)) if destinations[i] == dest])
+                        break
+                else:
+                    nouveaux_groupes.append(groupe)  
+            
+            #Si aucun groupe créé on sort de la boucle
+            if nouveaux_groupes == groupes : 
+                break 
+
+            #On met à jour les groupes
+            groupes = nouveaux_groupes[:]
+
+        #On crée un dictionnaire pour stocker la correspondance entre les anciens et les nouveaux noms des états
+        table_correspondance = {} 
+
+        #On initialise un compteur pour les nouveaux noms des états
+        nouveau_nom = 0 
+
+        #On remplit la table de correspondance qui fait le lien entre les nouveaux et les anciens noms des états
+        for g in range(len(groupes)):
+            for etat in groupes[g]:
+                table_correspondance[etat] = nouveau_nom
+            nouveau_nom += 1
+        
+        #On met à jour les transitions 
+        for transition in self.transitions:
+            transition.etat1 = table_correspondance[transition.etat1]
+            transition.etat2 = table_correspondance[transition.etat2]
+        
+        # On met à jour le nombre d'états dans l'automate
+        self.nb_etats = len(groupes)
+
+        return table_correspondance
+
     
+
+
+ 
+        
+
+        
 
         
 

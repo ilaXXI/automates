@@ -64,7 +64,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 choix_invalide = False
                 automate.standardisation()
 
-        elif (choix == "dc") or (choix == "c"):
+        elif (choix == "dc") or (choix == "c") or (choix == "m"):
             if not (caracteristiques[1] and caracteristiques[2]): # On s'assure que l'automate n'est bien pas déterministe complet
                 choix_invalide = False
                 if caracteristiques[1]: # S'il est déjà déterministe on ne fait que le compléter
@@ -81,7 +81,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
             if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
                 choix_invalide = False
                 automate.minimisation()
-        
+
         elif choix == "r":
             choix_invalide = False
             changement_de_l_automate = False
