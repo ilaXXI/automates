@@ -86,7 +86,7 @@ class Automate:
         if len(self.initiaux) > 1: # On vérifie qu'il y a bien un seul état initial
             return 0
         
-        if self.est_asynchrone: # S'il est asynchrone, il n'est pas déterministe
+        if self.est_asynchrone(): # S'il est asynchrone, il n'est pas déterministe
             return 3
 
         transitions_par_etat = {} # Dictionnaire qui stocke les transitions par état de départ et symbole
@@ -149,9 +149,9 @@ class Automate:
 
         options = { # Dictionnaire qui répertorie et traite les différents cas pour le déterminisme
             0 : "L'automate n'est pas déterministe, car il existe plusieurs états initiaux.",
-            3 : "L'automate n'est pas déterministe, car il est asynchrone",
             1 : "L'automate n'est pas déterministe, car plusieurs transitions partent du même état avec le même symbole.",
-            2 : "L'automate est déterministe."
+            2 : "L'automate est déterministe.",
+            3 : "L'automate n'est pas déterministe, car il est asynchrone."
         }
 
         est_deterministe = self.est_deterministe()
