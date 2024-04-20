@@ -132,9 +132,9 @@ class Automate:
 
     def caracteristiques (self) : # Affiche les caractéristiques de l'automate
         
-        # Ce suivant tableau correspond à [standard, déterministe, complet, minimisé]
+        # Ce suivant tableau correspond à [standard, déterministe, complet]
         # Il permettra de savoir quelles actions peuvent être proposées à l'utilisateur
-        caracteristiques = [False, False, False, False]
+        caracteristiques = [False, False, False]
 
         if self.est_asynchrone():
             print("\nL'automate est asynchrone.")
@@ -166,12 +166,6 @@ class Automate:
             else:
                 caracteristiques[2] = True
                 print("L'automate est complet.")
-        
-                if self.est_minimal() :
-                    caracteristiques[3] = True 
-                    print("L'automate est minimal.")
-                else:
-                    print("L'automate n'est pas minimal.\n")
 
         return caracteristiques
 
@@ -200,6 +194,7 @@ class Automate:
                 if (etat,symbole) not in transitions_par_etat:
                     newTrans = Transition(etat, symbole, p)
                     self.transitions.append(newTrans)
+                    transitions_par_etat[(etat, symbole)] = True
 
     def standardisation(self) :
 
@@ -352,19 +347,6 @@ class Automate:
 
         return destinations
 
-    def est_minimal(self):
-        
-        # On vérifie que pour chaque couple d'états p et q il existe un mot qui les relie (càd qu'on peut accéder à l'un depuis l'autre)
-        for p in range(self.nb_etats):
-
-            for q in range(p + 1, self.nb_etats): 
-                
-                #print("Depuis p = ", p, " on va vers ", self.etats_accessibles(p), "\n et depuis q = ", q, "on va vers ", self.etats_accessibles(q))
-                if not ((p in self.etats_accessibles(q)) or (q in self.etats_accessibles(p))):
-                    return False  
-        
-        return True  
-
 
     def minimisation(self):
         # On sépare les groupes terminaux et les groupes non terminaux 
@@ -381,7 +363,6 @@ class Automate:
             
 
             for groupe in groupes:
-                
                 # On crée un dictionnaire pour stocker les transitions de chaque état du groupe pour chaque symbole de l'alphabet de l'automate
                 transitions_groupes = {symbole: [] for symbole in range(self.nb_symboles)}
             
@@ -389,49 +370,77 @@ class Automate:
                     for symbole in range(self.nb_symboles):
                         # On récupère la destination de chaque état pour chaque symbole de l'alphabet
                         destination = self.prochain_etat(etat, symbole)
-                        
                         for g in range(len(groupes)):
                             # Si la destination est dans le groupe, on ajoute le groupe dans le dictionnaire
-                            if set(destination).issubset(set(groupes[g])):
-                                transitions_groupes[symbole].append(g)
+                            if destination[0] in groupes[g]:
+                                transitions_groupes[symbole].append(groupes[g])
                                 break
-            
                 
                 for symbole, destinations in transitions_groupes.items():
                     # Si les destinations sont dans plusieurs groupes, on sépare le groupe en plusieurs groupes
-                    if len(set(destinations)) > 1:
+                    ensemble_destinations = {tuple(ensemble) for ensemble in destinations}
+                    if len(ensemble_destinations) > 1:
                         
-                        for dest in set(destinations):
+                        for dest in ensemble_destinations:
                             # On crée des nouveaux groupes en fonction des destinations
-                            nouveaux_groupes.append([list(groupe)[i] for i in range(len(groupe)) if destinations[i] == dest])
+                            nouveaux_groupes.append(set(list(groupe)[i] for i in range(len(groupe)) if destinations[i] == set(dest)))
                         break
                 else:
                     nouveaux_groupes.append(groupe)  
             
             # Si aucun groupe créé on sort de la boucle
-            if nouveaux_groupes == groupes : 
+            if nouveaux_groupes == groupes :
                 break 
-
+                
             # On met à jour les groupes
             groupes = nouveaux_groupes[:]
 
+        if len(groupes) == self.nb_etats: # Si on a le même nombre d'etats qu'avant, c'est que c'etait deja minimisé
+            return [], False
+        
         # On crée un dictionnaire pour stocker la correspondance entre les anciens et les nouveaux noms des états
         table_correspondance = {} 
+        
+        initiaux = [] # On va changer les états initiaux et terminaux, et les transitions
+        terminaux = []
 
-        # On remplit la table de correspondance qui fait le lien entre les nouveaux et les anciens noms des états
-        for g in range(len(groupes)):
-            for etat in groupes[g]:
-                table_correspondance[etat] = g
+        nb_etats = 0
         
-        # On met à jour les transitions 
-        for transition in self.transitions:
-            transition.etat1 = table_correspondance[transition.etat1]
-            transition.etat2 = table_correspondance[transition.etat2]
-        
-        # On met à jour le nombre d'états dans l'automate
+        for groupe in groupes:
+            if (groupe & set(self.initiaux)): # Si le groupe d'etats contient l'etat initial, il consititue le nouvel etat initial
+                initiaux.append(nb_etats)
+
+            if (groupe & set(self.terminaux)): # De même s'il possède un état terminal, il devient terminal
+                terminaux.append(nb_etats)          
+
+            table_correspondance[nb_etats] = groupe
+
+            nb_etats += 1
+
+        for transition in self.transitions: # On refait toutes les transitions une par une avec les nouveaux noms d'etats
+            for i in range(nb_etats):
+                if transition.etat1 in table_correspondance[i]:
+                    transition.etat1 = i
+                    break
+            for i in range(nb_etats):
+                if transition.etat2 in table_correspondance[i]:
+                    transition.etat2 = i
+                    break            
+
+        for transition1 in range(len(self.transitions)): # On supprime les doublons
+            transition2 = transition1+1
+            while transition2 < len(self.transitions):
+                if self.transitions[transition1].etat1 == self.transitions[transition2].etat1 and self.transitions[transition1].symbole == self.transitions[transition2].symbole:
+                    self.transitions.pop(transition2)
+                else:
+                    transition2 += 1
+
+        self.initiaux = initiaux
+        self.terminaux = terminaux
         self.nb_etats = len(groupes)
 
-        return table_correspondance
+        
+        return table_correspondance, True
 
     
 

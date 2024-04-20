@@ -50,8 +50,8 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
         if not (caracteristiques[1] and caracteristiques[2]): # Si l'automate n'est pas déterministe complet
             print("DC - Obtention de l'automate deterministe complet équivalent")
 
-        if not (caracteristiques[3]):
-            print("M - Minimisation de l'automate")
+        
+        print("M - Minimisation de l'automate")
 
         print("C - Obtention d'un automate reconnaissant le langage complémentaire")
 
@@ -82,10 +82,13 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 automate.complementarisation()
 
             elif choix == "m":
-                if not caracteristiques[3]: # On s'assure que l'automate n'est bien pas minimal
-                    choix_invalide = False
-                    table_correspondance = automate.minimisation()
-                    print("Suite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (anciens : nouveau)\n\n", table_correspondance)
+                choix_invalide = False
+                table_correspondance, reussite = automate.minimisation()
+                if reussite:
+                    print("Suite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
+                else:
+                    print("L'automate etait deja minimal !\n")
+                    changement_de_l_automate = False
 
         elif choix == "r":
             choix_invalide = False
