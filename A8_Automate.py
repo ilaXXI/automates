@@ -212,6 +212,7 @@ class Automate:
         transitions_nouv = [] # On crée une nouvelle liste pour stocker les nouvelle transitions
         for transition in self.transitions : # Si un des états de transition est un état initial qui existe Alors on met à jour les états pour pointer vers le nouvel état initial
             if transition.etat1 in self.initiaux :  
+                transitions_nouv.append(Transition(transition.etat1, transition.symbole, transition.etat2))
                 transition.etat1 = i
             transitions_nouv.append(transition)
         self.transitions = transitions_nouv
