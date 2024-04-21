@@ -71,7 +71,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                     automate.completion()
                 else:
                     table_correspondance = automate.determinisation_completion()
-                    print("\nSuite à la determinisation et/ou completion, voici le tableau des relations entre les anciens et nouveaux etats sous la forme (anciens : nouveau)\n\n", table_correspondance)
+                    print("\nSuite a la determinisation et/ou completion, voici le tableau des relations entre les anciens et nouveaux etats sous la forme (anciens : nouveau)\n\n", table_correspondance)
                 if choix == "m":
                     print("\nVoici l'automate deterministe complet : \n")
                     automate.afficherAutomate()
