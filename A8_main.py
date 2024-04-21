@@ -42,18 +42,18 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
         
         changement_de_l_automate = True # Si c'est true, l'automate a été modifié
 
-        print("Choisissez une action : \n")
+        print("\nChoisissez une action : \n")
         
         if not caracteristiques[0]: # Si l'automate n'est pas standard
             print("S - Standardisation de l'automate")
 
         if not (caracteristiques[1] and caracteristiques[2]): # Si l'automate n'est pas déterministe complet
-            print("DC - Obtention de l'automate deterministe complet équivalent")
+            print("DC - Obtention de l'automate deterministe complet equivalent")
 
         
         print("M - Minimisation de l'automate")
 
-        print("C - Obtention d'un automate reconnaissant le langage complémentaire")
+        print("C - Obtention d'un automate reconnaissant le langage complementaire")
 
         print("R - Test de la reconnaissance d'un mot\n")
 
@@ -71,21 +71,21 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                     automate.completion()
                 else:
                     table_correspondance = automate.determinisation_completion()
-                    print("\nSuite à la déterminisation et/ou complétion, voici le tableau des relations entre les anciens et nouveaux états sous la forme (anciens : nouveau)\n\n", table_correspondance)
+                    print("\nSuite à la determinisation et/ou completion, voici le tableau des relations entre les anciens et nouveaux etats sous la forme (anciens : nouveau)\n\n", table_correspondance)
                 if choix == "m":
-                    print("\nVoici l'automate déterministe complet : \n")
+                    print("\nVoici l'automate deterministe complet : \n")
                     automate.afficherAutomate()
 
             if choix == "c":
                 choix_invalide = False
-                print("\nOn obtient l'automate reconnaissant le langage complémentaire à partir de l'automate déterministe complet équivalent.")
+                print("\nOn obtient l'automate reconnaissant le langage complementaire a partir de l'automate deterministe complet equivalent.")
                 automate.complementarisation()
 
             elif choix == "m":
                 choix_invalide = False
                 table_correspondance, reussite = automate.minimisation()
                 if reussite:
-                    print("\nSuite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
+                    print("\nSuite a la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
                 else:
                     print("\nL'automate est minimal !\n")
                     changement_de_l_automate = False
@@ -143,4 +143,4 @@ while continuer:
     if reponse2.lower() != 'oui':
         continuer = False
 
-print("Fin du programme.")
+print("\n\nFin du programme.")
