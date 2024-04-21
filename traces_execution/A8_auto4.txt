@@ -1,0 +1,93 @@
+Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44)
+4
+
+|   |   | a  |
+--------------
+| E | 0 | 1  |
+--------------
+|   | 1 | -- |
+--------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est déterministe.
+L'automate n'est pas complet.
+Choisissez une action : 
+
+DC - Obtention de l'automate deterministe complet équivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complémentaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : DC
+Voici votre nouvel automate :
+
+|   |   | a |
+-------------
+| E | 0 | 1 |
+-------------
+|   | 1 | 2 |
+-------------
+|   | 2 | 2 |
+-------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est déterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complémentaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : Suite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)
+
+ {0: set(), 1: {0, 1, 2}}
+
+Voici votre nouvel automate :
+
+|   |   | a  |
+--------------
+|   | 0 | -- |
+--------------
+| E | 1 | 1  |
+--------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate est déterministe.
+L'automate n'est pas complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+S - Standardisation de l'automate
+DC - Obtention de l'automate deterministe complet équivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complémentaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : S
+Voici votre nouvel automate :
+
+|   |   | a  |
+--------------
+|   | 0 | -- |
+--------------
+|   | 1 | -- |
+--------------
+| E | 2 | 2  |
+--------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate est déterministe.
+L'automate n'est pas complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Non
+Voulez-vous étudier un autre automate ? (Oui/Non): Non
+
+Fin du programme.

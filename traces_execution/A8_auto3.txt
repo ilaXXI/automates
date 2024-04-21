@@ -1,10 +1,12 @@
-Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44) 
-1
+Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44)
+3
 
-|     |   | a  |
-----------------
-| E/S | 0 | -- |
-----------------
+|   |   | a  |
+--------------
+| E | 0 | 1  |
+--------------
+| S | 1 | -- |
+--------------
 
 L'automate est synchrone.
 L'automate est standard.
@@ -20,12 +22,14 @@ R - Test de la reconnaissance d'un mot
 Votre choix : DC
 Voici votre nouvel automate :
 
-|     |   | a |
----------------
-| E/S | 0 | 1 |
----------------
-|     | 1 | 1 |
----------------
+|   |   | a |
+-------------
+| E | 0 | 1 |
+-------------
+| S | 1 | 2 |
+-------------
+|   | 2 | 2 |
+-------------
 
 L'automate est synchrone.
 L'automate est standard.
@@ -42,7 +46,7 @@ R - Test de la reconnaissance d'un mot
 Votre choix : M
 L'automate est minimal !
 
-Voulez-vous effectuer une autre action ? (Oui/Non):Oui
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
 Choisissez une action : 
 
 M - Minimisation de l'automate
@@ -50,8 +54,8 @@ C - Obtention d'un automate reconnaissant le langage complémentaire
 R - Test de la reconnaissance d'un mot
 
 Votre choix : R
-Quelle mot voulez-vous tester ? a 
-Le mot  a  n'est pas reconnu par l'automate.
+Quelle mot voulez-vous tester ? a
+Le mot  a  est reconnu par l'automate.
 
 Voulez-vous effectuer une autre action ? (Oui/Non): Oui
 Choisissez une action : 
@@ -76,12 +80,14 @@ On obtient l'automate reconnaissant le langage complémentaire à partir de l'au
 
 Voici votre nouvel automate :
 
-|   |   | a |
--------------
-| E | 0 | 1 |
--------------
-| S | 1 | 1 |
--------------
+|     |   | a |
+---------------
+| E/S | 0 | 1 |
+---------------
+|     | 1 | 2 |
+---------------
+| S   | 2 | 2 |
+---------------
 
 L'automate est synchrone.
 L'automate est standard.
@@ -96,8 +102,8 @@ C - Obtention d'un automate reconnaissant le langage complémentaire
 R - Test de la reconnaissance d'un mot
 
 Votre choix : R
-Quelle mot voulez-vous tester ? a
-Le mot  a  est reconnu par l'automate.
+Quelle mot voulez-vous tester ? a 
+Le mot  a  n'est pas reconnu par l'automate.
 
 Voulez-vous effectuer une autre action ? (Oui/Non): Oui
 Choisissez une action : 
@@ -109,8 +115,6 @@ R - Test de la reconnaissance d'un mot
 Votre choix : R
 Quelle mot voulez-vous tester ? aa
 Le mot  aa  est reconnu par l'automate.
-
 Voulez-vous effectuer une autre action ? (Oui/Non): Non
 Voulez-vous étudier un autre automate ? (Oui/Non): Non
-
 Fin du programme.
