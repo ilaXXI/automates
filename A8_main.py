@@ -112,7 +112,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 print("Le mot ", chaine, " n'est pas reconnu par l'automate.")
         
         if choix_invalide:
-            print("Choix invalide. Réessayez.")
+            print("Choix invalide. Reessayez.")
         else:
             return changement_de_l_automate
 
