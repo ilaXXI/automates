@@ -1,0 +1,191 @@
+Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44)
+17
+
+|     |   | a   | b   | c   | d   |
+-----------------------------------
+|     | 0 | --  | --  | --  | --  |
+-----------------------------------
+| E   | 1 | 1,2 | --  | --  | --  |
+-----------------------------------
+| E   | 2 | --  | 2,3 | --  | --  |
+-----------------------------------
+| E   | 3 | --  | --  | 3,4 | --  |
+-----------------------------------
+| E   | 4 | --  | --  | --  | 4,5 |
+-----------------------------------
+| E/S | 5 | 0   | 0   | 0   | 0   |
+-----------------------------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate n'est pas deterministe, car il existe plusieurs etats initiaux.
+
+Choisissez une action : 
+
+S - Standardisation de l'automate
+DC - Obtention de l'automate deterministe complet equivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : S
+Voici votre nouvel automate :
+
+|     |   | a     | b     | c     | d     |
+-------------------------------------------
+|     | 0 | --    | --    | --    | --    |
+-------------------------------------------
+|     | 1 | 1,2   | --    | --    | --    |
+-------------------------------------------
+|     | 2 | --    | 2,3   | --    | --    |
+-------------------------------------------
+|     | 3 | --    | --    | 3,4   | --    |
+-------------------------------------------
+|     | 4 | --    | --    | --    | 4,5   |
+-------------------------------------------
+| S   | 5 | 0     | 0     | 0     | 0     |
+-------------------------------------------
+| E/S | 6 | 0,1,2 | 0,2,3 | 0,3,4 | 0,4,5 |
+-------------------------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate n'est pas deterministe, car plusieurs transitions partent du meme etat avec le meme symbole.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+DC - Obtention de l'automate deterministe complet equivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : DC
+Suite a la determinisation et/ou completion, voici le tableau des relations entre les anciens et nouveaux etats sous la forme (anciens : nouveau)
+
+ {0: {6}, 1: {0, 4, 5}, 2: {0}, 3: {0, 3, 4}, 4: {4, 5}, 5: {3, 4}, 6: {0, 2, 3}, 7: {2, 3}, 8: {0, 1, 2}, 9: {1, 2}}
+
+Voici votre nouvel automate :
+
+|     |    | a  | b  | c  | d  |
+--------------------------------
+| E/S | 0  | 8  | 6  | 3  | 1  |
+--------------------------------
+| S   | 1  | 2  | 2  | 2  | 1  |
+--------------------------------
+|     | 2  | 10 | 10 | 10 | 10 |
+--------------------------------
+|     | 3  | 10 | 10 | 5  | 4  |
+--------------------------------
+| S   | 4  | 2  | 2  | 2  | 1  |
+--------------------------------
+|     | 5  | 10 | 10 | 5  | 4  |
+--------------------------------
+|     | 6  | 10 | 7  | 5  | 10 |
+--------------------------------
+|     | 7  | 10 | 7  | 5  | 10 |
+--------------------------------
+|     | 8  | 9  | 7  | 10 | 10 |
+--------------------------------
+|     | 9  | 9  | 7  | 10 | 10 |
+--------------------------------
+|     | 10 | 10 | 10 | 10 | 10 |
+--------------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : M
+Suite a la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)
+
+ {0: {1, 4}, 1: {0}, 2: {8, 9}, 3: {2, 10}, 4: {6, 7}, 5: {3, 5}}
+
+Voici votre nouvel automate :
+
+|     |   | a | b | c | d |
+---------------------------
+| S   | 0 | 3 | 3 | 3 | 0 |
+---------------------------
+| E/S | 1 | 2 | 4 | 5 | 0 |
+---------------------------
+|     | 2 | 2 | 4 | 3 | 3 |
+---------------------------
+|     | 3 | 3 | 3 | 3 | 3 |
+---------------------------
+|     | 4 | 3 | 4 | 5 | 3 |
+---------------------------
+|     | 5 | 3 | 3 | 5 | 0 |
+---------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : R
+Quel mot voulez-vous tester ? d
+Le mot  d  est reconnu par l'automate.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : C
+On obtient l'automate reconnaissant le langage complementaire a partir de l'automate deterministe complet equivalent.
+
+Voici votre nouvel automate :
+
+|   |   | a | b | c | d |
+-------------------------
+|   | 0 | 3 | 3 | 3 | 0 |
+-------------------------
+| E | 1 | 2 | 4 | 5 | 0 |
+-------------------------
+| S | 2 | 2 | 4 | 3 | 3 |
+-------------------------
+| S | 3 | 3 | 3 | 3 | 3 |
+-------------------------
+| S | 4 | 3 | 4 | 5 | 3 |
+-------------------------
+| S | 5 | 3 | 3 | 5 | 0 |
+-------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : R
+Quel mot voulez-vous tester ? d
+Le mot  d  n'est pas reconnu par l'automate.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Non
+Voulez-vous etudier un autre automate ? (Oui/Non): Non
+
+Fin du programme.
