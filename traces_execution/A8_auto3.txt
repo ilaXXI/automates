@@ -54,7 +54,7 @@ C - Obtention d'un automate reconnaissant le langage complémentaire
 R - Test de la reconnaissance d'un mot
 
 Votre choix : R
-Quelle mot voulez-vous tester ? a
+Quel mot voulez-vous tester ? a
 Le mot  a  est reconnu par l'automate.
 
 Voulez-vous effectuer une autre action ? (Oui/Non): Oui
@@ -65,7 +65,7 @@ C - Obtention d'un automate reconnaissant le langage complémentaire
 R - Test de la reconnaissance d'un mot
 
 Votre choix : R
-Quelle mot voulez-vous tester ? aa
+Quel mot voulez-vous tester ? aa
 Le mot  aa  n'est pas reconnu par l'automate.
 
 Voulez-vous effectuer une autre action ? (Oui/Non): Oui
@@ -102,7 +102,7 @@ C - Obtention d'un automate reconnaissant le langage complémentaire
 R - Test de la reconnaissance d'un mot
 
 Votre choix : R
-Quelle mot voulez-vous tester ? a 
+Quel mot voulez-vous tester ? a 
 Le mot  a  n'est pas reconnu par l'automate.
 
 Voulez-vous effectuer une autre action ? (Oui/Non): Oui
@@ -113,7 +113,7 @@ C - Obtention d'un automate reconnaissant le langage complémentaire
 R - Test de la reconnaissance d'un mot
 
 Votre choix : R
-Quelle mot voulez-vous tester ? aa
+Quel mot voulez-vous tester ? aa
 Le mot  aa  est reconnu par l'automate.
 Voulez-vous effectuer une autre action ? (Oui/Non): Non
 Voulez-vous étudier un autre automate ? (Oui/Non): Non

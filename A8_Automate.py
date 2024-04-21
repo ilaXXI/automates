@@ -149,7 +149,7 @@ class Automate:
 
         options = { # Dictionnaire qui répertorie et traite les différents cas pour le déterminisme
             0 : "L'automate n'est pas deterministe, car il existe plusieurs etats initiaux.",
-            1 : "L'automate n'est pas deterministe, car plusieurs transitions partent du meme etat avec le même symbole.",
+            1 : "L'automate n'est pas deterministe, car plusieurs transitions partent du meme etat avec le meme symbole.",
             2 : "L'automate est deterministe.",
             3 : "L'automate n'est pas deterministe, car il est asynchrone."
         }
