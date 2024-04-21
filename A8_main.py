@@ -71,23 +71,23 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                     automate.completion()
                 else:
                     table_correspondance = automate.determinisation_completion()
-                    print("Suite à la déterminisation et/ou complétion, voici le tableau des relations entre les anciens et nouveaux états sous la forme (anciens : nouveau)\n\n", table_correspondance)
+                    print("\nSuite à la déterminisation et/ou complétion, voici le tableau des relations entre les anciens et nouveaux états sous la forme (anciens : nouveau)\n\n", table_correspondance)
                 if choix == "m":
                     print("\nVoici l'automate déterministe complet : \n")
                     automate.afficherAutomate()
 
             if choix == "c":
                 choix_invalide = False
-                print("On obtient l'automate reconnaissant le langage complémentaire à partir de l'automate déterministe complet équivalent.")
+                print("\nOn obtient l'automate reconnaissant le langage complémentaire à partir de l'automate déterministe complet équivalent.")
                 automate.complementarisation()
 
             elif choix == "m":
                 choix_invalide = False
                 table_correspondance, reussite = automate.minimisation()
                 if reussite:
-                    print("Suite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
+                    print("\nSuite à la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)\n\n", table_correspondance)
                 else:
-                    print("L'automate est minimal !\n")
+                    print("\nL'automate est minimal !\n")
                     changement_de_l_automate = False
 
         elif choix == "r":
@@ -107,12 +107,12 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
             mot_reconnu = automate_dc.reconnaissance(chaine)
             
             if mot_reconnu:
-                print("Le mot ", chaine, " est reconnu par l'automate.")
+                print("\nLe mot ", chaine, " est reconnu par l'automate.")
             else:
-                print("Le mot ", chaine, " n'est pas reconnu par l'automate.")
+                print("\nLe mot ", chaine, " n'est pas reconnu par l'automate.")
         
         if choix_invalide:
-            print("Choix invalide. Reessayez.")
+            print("\nChoix invalide. Reessayez.")
         else:
             return changement_de_l_automate
 
@@ -135,11 +135,11 @@ while continuer:
             auto.afficherAutomate()
             caracteristiques = auto.caracteristiques()
         
-        reponse1 = input("Voulez-vous effectuer une autre action ? (Oui/Non): ")
+        reponse1 = input("\nVoulez-vous effectuer une autre action ? (Oui/Non): ")
         if reponse1.lower() != 'oui':
             automate_courant = False
     
-    reponse2 = input("Voulez-vous etudier un autre automate ? (Oui/Non): ")
+    reponse2 = input("\nVoulez-vous etudier un autre automate ? (Oui/Non): ")
     if reponse2.lower() != 'oui':
         continuer = False
 
