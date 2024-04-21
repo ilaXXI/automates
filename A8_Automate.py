@@ -203,18 +203,16 @@ class Automate:
 
         term = False
         for etat_initial in self.initiaux : 
-            if self.est_etat_terminal(etat_initial) : #on vérifie si le nouvel état initial est terminal
+            if self.est_etat_terminal(etat_initial) : # On vérifie si le nouvel état initial est terminal
                 term = True
         
-        if term : #si au moins un état initial est terminal Alors le nouvel état est terminal
+        if term : # Si au moins un état initial est terminal Alors le nouvel état est terminal
             self.terminaux.append(i)
 
-        transitions_nouv = [] #on crée une nouvelle liste pour stocker les nouvelle transitions
-        for transition in self.transitions : #si un des états de transition est un état initial qui existe Alors on met à jour les états pour pointer vers le nouvel état initial
+        transitions_nouv = [] # On crée une nouvelle liste pour stocker les nouvelle transitions
+        for transition in self.transitions : # Si un des états de transition est un état initial qui existe Alors on met à jour les états pour pointer vers le nouvel état initial
             if transition.etat1 in self.initiaux :  
                 transition.etat1 = i
-            if transition.etat2 in self.initiaux :
-                transition.etat2 = i
             transitions_nouv.append(transition)
         self.transitions = transitions_nouv
 
@@ -222,10 +220,10 @@ class Automate:
 
     def reconnaissance(self,chaine) : 
 
-        #On initialise l'état de départ à l'état initial
+        # On initialise l'état de départ à l'état initial
         etat_de_depart = self.initiaux[0]
 
-        #On parcourt la chaine de caractères
+        # On parcourt la chaine de caractères
         for lettre in chaine :
             #On la convertit en chiffre
             chiffre = ord(lettre)-97
@@ -338,6 +336,11 @@ class Automate:
 
         # On crée notre premier groupe de notre itération 0 
         groupes = [terminaux, non_terminaux] 
+
+        if terminaux == set():
+            groupes.pop(0)
+        if non_terminaux == set():
+            groupes.pop(1)
 
         # On va itérer jusqu'à ce qu'il n'y ait plus de séparation de groupes possible
         while True:
