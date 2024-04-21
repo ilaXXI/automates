@@ -103,7 +103,7 @@ def choix_action(automate, caracteristiques): # Permet à l'utilisateur de chois
                 else:
                     automate_dc.determinisation_completion()            
 
-            chaine = input("Quelle mot voulez-vous tester ? ")
+            chaine = input("\nQuel mot voulez-vous tester ? ")
             mot_reconnu = automate_dc.reconnaissance(chaine)
             
             if mot_reconnu:
