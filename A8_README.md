@@ -9,4 +9,4 @@ Fichiers textes :
 5 - nombre de transitions
 
 Lignes 6 et suivantes : transitions sous la forme : 
-<état de départ><\symbole sous forme de chiffre><état d'arrivée>
+<état de départ> <\symbole sous forme de chiffre> <état d'arrivée>
