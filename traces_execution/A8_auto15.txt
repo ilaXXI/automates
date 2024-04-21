@@ -1,0 +1,172 @@
+Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44)
+15
+
+|   |   | a | b  | c  | d  |
+----------------------------
+|   | 0 | 0 | -- | -- | -- |
+----------------------------
+| E | 1 | 1 | 2  | 3  | 4  |
+----------------------------
+|   | 2 | 0 | 2  | 3  | 4  |
+----------------------------
+|   | 3 | 0 | 0  | 3  | 4  |
+----------------------------
+| S | 4 | 0 | 0  | 0  | 4  |
+----------------------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate est deterministe.
+L'automate n'est pas complet.
+
+Choisissez une action : 
+
+S - Standardisation de l'automate
+DC - Obtention de l'automate deterministe complet equivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : S
+Voici votre nouvel automate :
+
+|   |   | a  | b  | c  | d  |
+-----------------------------
+|   | 0 | 0  | -- | -- | -- |
+-----------------------------
+|   | 1 | -- | -- | -- | -- |
+-----------------------------
+|   | 2 | 0  | 2  | 3  | 4  |
+-----------------------------
+|   | 3 | 0  | 0  | 3  | 4  |
+-----------------------------
+| S | 4 | 0  | 0  | 0  | 4  |
+-----------------------------
+| E | 5 | 1  | 2  | 3  | 4  |
+-----------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate n'est pas complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+DC - Obtention de l'automate deterministe complet equivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : DC
+Voici votre nouvel automate :
+
+|   |   | a | b | c | d |
+-------------------------
+|   | 0 | 0 | 6 | 6 | 6 |
+-------------------------
+|   | 1 | 6 | 6 | 6 | 6 |
+-------------------------
+|   | 2 | 0 | 2 | 3 | 4 |
+-------------------------
+|   | 3 | 0 | 0 | 3 | 4 |
+-------------------------
+| S | 4 | 0 | 0 | 0 | 4 |
+-------------------------
+| E | 5 | 1 | 2 | 3 | 4 |
+-------------------------
+|   | 6 | 6 | 6 | 6 | 6 |
+-------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : M
+Suite a la minimisation, voici la table de correspondance des anciens etats et les nouveaux, sous la forme (nouveau : anciens)
+
+ {0: {4}, 1: {2, 5}, 2: {3}, 3: {0, 1, 6}}
+
+Voici votre nouvel automate :
+
+|   |   | a | b | c | d |
+-------------------------
+| S | 0 | 3 | 3 | 3 | 0 |
+-------------------------
+| E | 1 | 3 | 1 | 2 | 0 |
+-------------------------
+|   | 2 | 3 | 3 | 2 | 0 |
+-------------------------
+|   | 3 | 3 | 3 | 3 | 3 |
+-------------------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+S - Standardisation de l'automate
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : R
+Quel mot voulez-vous tester ? abcd
+Le mot  abcd  n'est pas reconnu par l'automate.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+S - Standardisation de l'automate
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : C
+On obtient l'automate reconnaissant le langage complementaire a partir de l'automate deterministe complet equivalent.
+
+Voici votre nouvel automate :
+
+|     |   | a | b | c | d |
+---------------------------
+|     | 0 | 3 | 3 | 3 | 0 |
+---------------------------
+| E/S | 1 | 3 | 1 | 2 | 0 |
+---------------------------
+| S   | 2 | 3 | 3 | 2 | 0 |
+---------------------------
+| S   | 3 | 3 | 3 | 3 | 3 |
+---------------------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+S - Standardisation de l'automate
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : R
+Quel mot voulez-vous tester ? abcd
+Le mot  abcd  est reconnu par l'automate.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Non
+Voulez-vous etudier un autre automate ? (Oui/Non): Non
+
+Fin du programme.

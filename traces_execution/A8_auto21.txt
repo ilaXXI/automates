@@ -1,0 +1,148 @@
+Quel automate voulez-vous utiliser ? (faites un choix entre 1 et 44)
+21
+
+|     |   | a  | b  | c  | d  |
+-------------------------------
+|     | 0 | -- | -- | -- | 1  |
+-------------------------------
+| E/S | 1 | 2  | -- | -- | -- |
+-------------------------------
+|     | 2 | -- | 3  | -- | -- |
+-------------------------------
+|     | 3 | -- | -- | 0  | -- |
+-------------------------------
+
+L'automate est synchrone.
+L'automate n'est pas standard.
+L'automate est deterministe.
+L'automate n'est pas complet.
+
+Choisissez une action : 
+
+S - Standardisation de l'automate
+DC - Obtention de l'automate deterministe complet equivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : S
+Voici votre nouvel automate :
+
+|     |   | a  | b  | c  | d  |
+-------------------------------
+|     | 0 | -- | -- | -- | 1  |
+-------------------------------
+| S   | 1 | -- | -- | -- | -- |
+-------------------------------
+|     | 2 | -- | 3  | -- | -- |
+-------------------------------
+|     | 3 | -- | -- | 0  | -- |
+-------------------------------
+| E/S | 4 | 2  | -- | -- | -- |
+-------------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate n'est pas complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+DC - Obtention de l'automate deterministe complet equivalent
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : DC
+Voici votre nouvel automate :
+
+|     |   | a | b | c | d |
+---------------------------
+|     | 0 | 5 | 5 | 5 | 1 |
+---------------------------
+| S   | 1 | 5 | 5 | 5 | 5 |
+---------------------------
+|     | 2 | 5 | 3 | 5 | 5 |
+---------------------------
+|     | 3 | 5 | 5 | 0 | 5 |
+---------------------------
+| E/S | 4 | 2 | 5 | 5 | 5 |
+---------------------------
+|     | 5 | 5 | 5 | 5 | 5 |
+---------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : M
+L'automate est minimal !
+
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : R
+Quel mot voulez-vous tester ? abcd
+Le mot  abcd  est reconnu par l'automate.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : C
+On obtient l'automate reconnaissant le langage complementaire a partir de l'automate deterministe complet equivalent.
+
+Voici votre nouvel automate :
+
+|   |   | a | b | c | d |
+-------------------------
+| S | 0 | 5 | 5 | 5 | 1 |
+-------------------------
+|   | 1 | 5 | 5 | 5 | 5 |
+-------------------------
+| S | 2 | 5 | 3 | 5 | 5 |
+-------------------------
+| S | 3 | 5 | 5 | 0 | 5 |
+-------------------------
+| E | 4 | 2 | 5 | 5 | 5 |
+-------------------------
+| S | 5 | 5 | 5 | 5 | 5 |
+-------------------------
+
+L'automate est synchrone.
+L'automate est standard.
+L'automate est deterministe.
+L'automate est complet.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Oui
+Choisissez une action : 
+
+M - Minimisation de l'automate
+C - Obtention d'un automate reconnaissant le langage complementaire
+R - Test de la reconnaissance d'un mot
+
+Votre choix : R
+Quel mot voulez-vous tester ? abcd
+Le mot  abcd  n'est pas reconnu par l'automate.
+
+Voulez-vous effectuer une autre action ? (Oui/Non): Non
+Voulez-vous etudier un autre automate ? (Oui/Non): Non
+
+Fin du programme.
