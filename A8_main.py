@@ -139,7 +139,7 @@ while continuer:
         if reponse1.lower() != 'oui':
             automate_courant = False
     
-    reponse2 = input("Voulez-vous étudier un autre automate ? (Oui/Non): ")
+    reponse2 = input("Voulez-vous etudier un autre automate ? (Oui/Non): ")
     if reponse2.lower() != 'oui':
         continuer = False
 

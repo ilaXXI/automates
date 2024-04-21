@@ -148,10 +148,10 @@ class Automate:
             print("L'automate n'est pas standard.")
 
         options = { # Dictionnaire qui répertorie et traite les différents cas pour le déterminisme
-            0 : "L'automate n'est pas déterministe, car il existe plusieurs états initiaux.",
-            1 : "L'automate n'est pas déterministe, car plusieurs transitions partent du même état avec le même symbole.",
-            2 : "L'automate est déterministe.",
-            3 : "L'automate n'est pas déterministe, car il est asynchrone."
+            0 : "L'automate n'est pas deterministe, car il existe plusieurs états initiaux.",
+            1 : "L'automate n'est pas deterministe, car plusieurs transitions partent du même état avec le même symbole.",
+            2 : "L'automate est deterministe.",
+            3 : "L'automate n'est pas deterministe, car il est asynchrone."
         }
 
         est_deterministe = self.est_deterministe()
